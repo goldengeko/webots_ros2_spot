@@ -1,0 +1,125 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "../protos/Spot.proto"
+EXTERNPROTO "../protos/Kinova.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/robotiq/protos/Robotiq2f140Gripper.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.2049162900491972 0.22167157145139219 0.9533472759088074 1.9594048080442565
+  position 0.8662730759421755 -2.790022184525618 2.6513500762666387
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 2 2
+}
+Spot {
+  hidden position_0_0 -6.27296703404173e-06
+  hidden position_0_1 1.6640588317684347e-05
+  hidden position_0_2 -8.69066637162025e-06
+  hidden position_0_3 2.3590018105985125e-05
+  hidden translation_23 -0.05279952062127248 0.0006373172870020293 -3.640676957683552e-07
+  hidden rotation_23 0.9821232189036436 -0.013096655989267193 -0.18778301438693676 5.518340810230718e-06
+  hidden position_23_0 1.943743709787015e-05
+  hidden translation_24 0 -0.00053 0
+  hidden rotation_24 1 0 0 1.9437443873962255e-05
+  hidden position_24_1 3.759894384178758e-05
+  hidden translation_26 -0.1122 -0.319729 0.182338
+  hidden rotation_26 1 0 0 3.759894583730767e-05
+  hidden translation_28 0.05279951932048019 0.0006376090004084936 -3.6544330328513986e-07
+  hidden rotation_28 0.23911896007277558 0.003203027033984123 0.9709849965635585 2.272039618850477e-05
+  hidden position_28_0 1.9712116136981817e-05
+  hidden translation_29 0 -0.00053 0
+  hidden rotation_29 1 0 0 1.9712113039471792e-05
+  hidden position_29_1 3.753496286274701e-05
+  hidden translation_31 0.1122 -0.319729 0.182338
+  hidden rotation_31 1 0 0 3.753495728371988e-05
+  hidden translation_33 -0.05279897748789046 0.0006754612498264315 4.381730095426306e-08
+  hidden rotation_33 0.8509411475082624 -0.006171518932083613 -0.5252247860025197 7.979902253718692e-06
+  hidden position_33_0 1.9202835671998123e-05
+  hidden translation_34 0 -0.00053 0
+  hidden rotation_34 1 0 0 1.9202827584067214e-05
+  hidden position_34_1 3.933149089925183e-05
+  hidden translation_36 -0.1122 -0.319729 0.182338
+  hidden rotation_36 1 0 0 3.933149006604931e-05
+  hidden translation_38 0.0527989663720545 0.0006757526984199354 3.2249645287585325e-08
+  hidden rotation_38 0.33702336282780354 0.0025392544775711726 0.9414928598215373 2.0206348203424593e-05
+  hidden position_38_0 1.9229065799842e-05
+  hidden translation_39 0 -0.00053 0
+  hidden rotation_39 1 0 0 1.9229057952218767e-05
+  hidden position_39_1 3.9335458744719114e-05
+  hidden translation_41 0.1122 -0.319729 0.182338
+  hidden rotation_41 1 0 0 3.933546427359782e-05
+  hidden position_43_0 2.1922665103185373e-06
+  hidden translation_44 0 0 0.15643
+  hidden rotation_44 -0.9999999999993996 1.0959662759900158e-06 -3.6460548650309814e-12 3.1416
+  hidden position_44_0 1.450511046965793e-06
+  hidden translation_45 0 0.005375 -0.12838
+  hidden rotation_45 0.9999999999994741 -7.252557604915369e-07 7.252526224654025e-07 1.570800000000526
+  hidden position_45_0 -1.380806875930971e-06
+  hidden translation_46 0 -0.41 0
+  hidden rotation_46 0.9999999999997617 6.904034379662666e-07 2.296830634784901e-12 3.1416
+  hidden position_46_0 -2.2406413807924687e-06
+  hidden translation_47 0 0.20843 -0.006375
+  hidden rotation_47 0.9999999999987448 1.1203210565089764e-06 -1.1203162091200336e-06 1.5708000000012552
+  hidden position_47_0 -1.2190053734482558e-06
+  hidden translation_48 0 -0.000175 -0.10593
+  hidden rotation_48 -0.9999999999996286 -6.095028859055828e-07 -6.095002487173101e-07 1.5708000000003675
+  hidden position_48_0 2.225801337247313e-06
+  hidden translation_49 2.7672458081562377e-09 0.10592429228639055 -0.0001749999670079014
+  hidden rotation_49 0.9999999999987547 -1.1156514350088656e-06 1.1161142277238867e-06 1.5708000007558993
+  hidden position_50_0 -3.772304014798055e-08
+  hidden position_50_1 0.0007368021876544264
+  hidden position_50_2 -3.7953398481433295e-08
+  hidden position_50_3 0.0010333028587157327
+  hidden translation_51 0 -0.030601 0.054905
+  hidden rotation_51 1 0 0 2.2957960377230293
+  hidden position_52_0 -0.00924274921704785
+  hidden translation_53 0 0.081755 -0.02822
+  hidden rotation_53 -1 0 0 0.734242749217001
+  hidden translation_55 0 -0.0127 0.06142
+  hidden rotation_55 1 0 0 2.2965328021876377
+  hidden position_55_0 -0.009979512899280145
+  hidden translation_56 0 0.030601 0.054905
+  hidden rotation_56 3.286861152465349e-15 0.911903306238632 0.41040511701372795 3.141593
+  hidden position_57_0 0.000148849592989194
+  hidden translation_58 0 0.08175500297699184 -0.02821999999977844
+  hidden rotation_58 -1 0 0 0.7248511504069769
+  hidden translation_60 0 0.0127 0.06142
+  hidden rotation_60 8.948666026441732e-11 -0.9121152131337467 -0.40993394342257156 3.1415929999999537
+  hidden position_60_0 -0.0008844158758707518
+  translation -0.0003252660747152178 -7.087410909096461e-06 0.6070122725592539
+  rotation 0.039375390718393494 -0.9991912631761185 0.0081485089609239 0.0004526803215150863
+  frontExtension [
+    Kinova {
+      rotation 0.577349935856137 0.577349935856137 0.5773509358560258 -2.094395307179586
+      frontExtension [
+        Robotiq2f140Gripper {
+          translation 0 -0.18 0.26
+          rotation -0.5773509358554485 -0.5773509358554485 0.5773489358556708 -2.094395307179586
+        }
+      ]
+    }
+  ]
+  rearExtension [
+    Solid {
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.141176 0.121569 0.192157
+          }
+          geometry Box {
+            size 0.1 0.3 0.1
+          }
+        }
+      ]
+    }
+  ]
+}
