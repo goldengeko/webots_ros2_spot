@@ -11,15 +11,15 @@ EXTERNPROTO "../protos/Spot.proto"
 EXTERNPROTO "../protos/ImageBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/microsoft/protos/Kinect.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/velodyne/protos/VelodynePuck.proto"
-EXTERNPROTO "../protos/Kinova.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/robotiq/protos/Robotiq2f140Gripper.proto"
+EXTERNPROTO "../protos/GEN3-6DOF_VISION.proto"
+EXTERNPROTO "../protos/Robotiq2f140Gripper.proto"
 
 WorldInfo {
   title "Spot_Maze"
 }
 DEF Viewpoint Viewpoint {
-  orientation 0.14711223979901297 0.1191647622264874 -0.9819153468323135 1.5898233827355395
-  position 8.231295500315301 4.296813395782977 1.93633228809759
+  orientation 0.19247178284150282 -0.2664942357413082 -0.9444233347003185 4.843989678969718
+  position 6.856292857145949 -5.506798418281155 4.626683541104278
 }
 TexturedBackground {
   texture "factory"
@@ -357,12 +357,11 @@ DEF Spot Spot {
   controller "<extern>"
   supervisor TRUE
   frontExtension [
-    Kinova {
-      rotation -0.577349935856137 0.577349935856137 0.5773509358560258 2.09439
-      frontExtension [
+    GEN3-6DOF_VISION {
+      rotation 0.5773502691896258 -0.5773502691896258 -0.5773502691896258 -2.094395307179586
+      toolSlot [
         Robotiq2f140Gripper {
-          translation 0.18 -0.32 1.46928e-07
-          rotation 0.6776620723211167 -0.5199880554939083 0.5199870554938015 1.95044
+          rotation 0.577349935856137 0.577349935856137 0.5773509358560258 -2.094395307179586
         }
       ]
     }

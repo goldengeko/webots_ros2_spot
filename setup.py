@@ -19,6 +19,10 @@ setup(
         (os.path.join("share", package_name, "hazmat_signs"), glob("hazmat_signs/*")),
         (os.path.join("share", package_name, "protos"), glob("protos/*.proto")),
         (
+            os.path.join("share", package_name, "protos", "6dof", "urdf"),
+            glob("protos/6dof/urdf/*.urdf"),
+        ),
+        (
             os.path.join("share", package_name, "protos", "icons"),
             glob("protos/icons/*"),
         ),
