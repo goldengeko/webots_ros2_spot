@@ -18,18 +18,18 @@ def main():
 
     node.create_subscription(Clock, "/clock", increment_count, 1)
 
-    # Create an action client for the spotarm_joint_trajectory_controller
+    # Create an action client for the gen3_joint_trajectory_controller
     arm_client = ActionClient(
         node,
         FollowJointTrajectory,
-        "/spotarm_joint_trajectory_controller/follow_joint_trajectory",
+        "/joint_trajectory_controller/follow_joint_trajectory",
     )
 
-    # Create an action client for the tiago_gripper_joint_trajectory_controller
+    # Create an action client for the robotiq_gripper_controller
     gripper_client = ActionClient(
         node,
         FollowJointTrajectory,
-        "/tiago_gripper_joint_trajectory_controller/follow_joint_trajectory",
+        "/robotiq_gripper_controller/follow_joint_trajectory",
     )
 
     arm_client.wait_for_server()
@@ -42,24 +42,23 @@ def main():
     # Create a goal request to set arm joint positions
     arm_goal_msg = FollowJointTrajectory.Goal()
     arm_goal_msg.trajectory.joint_names = [
-        "spotarm_1_joint",
-        "spotarm_2_joint",
-        "spotarm_3_joint",
-        "spotarm_4_joint",
-        "Slider11",
-        "spotarm_5_joint",
-        "spotarm_6_joint",
+        "joint_1",
+        "joint_2",
+        "joint_3",
+        "joint_4",
+        "joint_5",
+        "joint_6",
     ]
     arm_point = JointTrajectoryPoint()
     arm_point.positions = [
         0.0,
-        math.radians(179),
-        math.radians(170),
+        math.radians(180),
+        math.radians(180),
         0.0,
         0.0,
-        math.radians(11),
         0.0,
     ]
+    arm_point.time_from_start.sec = 5  # Set a duration for the motion
     arm_goal_msg.trajectory.points.append(arm_point)
 
     # Create a goal request to set gripper joint positions
@@ -69,7 +68,8 @@ def main():
         "gripper_right_finger_joint",
     ]
     gripper_point = JointTrajectoryPoint()
-    gripper_point.positions = [0.045, 0.045]
+    gripper_point.positions = [0.0, 0.0]  # Fully close the gripper
+    gripper_point.time_from_start.sec = 2  # Set a duration for the motion
     gripper_goal_msg.trajectory.points.append(gripper_point)
 
     # Send action goals

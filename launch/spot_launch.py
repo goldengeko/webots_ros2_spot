@@ -18,25 +18,25 @@ package_dir = get_package_share_directory("webots_spot")
 
 # Define all the ROS 2 nodes that need to be restart on simulation reset here
 def get_ros2_nodes(*args):
-    # SpotArm Driver node
-    spotarm_ros2_control_params = os.path.join(
-        package_dir, "resource", "spotarm_ros2_controllers.yaml"
+    # kinova Driver node
+    gen3_ros2_control_params = os.path.join(
+        package_dir, "resource", "ros2_controllers.yaml"
     )
-    spotarm_driver = WebotsController(
-        robot_name="SpotArm",
+    gen3_driver = WebotsController(
+        robot_name="Gen3",
         parameters=[
             {
                 "robot_description": os.path.join(
-                    package_dir, "resource", "spotarm_control.urdf"
+                    package_dir, "resource", "ros2_control.urdf"
                 )
             },
             {"use_sim_time": True},
             {"set_robot_state_publisher": False},
-            spotarm_ros2_control_params,
+            gen3_ros2_control_params,
         ],
     )
 
-    # ROS2 control spawners for SpotArm
+    # ROS2 control spawners for gen3
     controller_manager_timeout = ["--controller-manager-timeout", "500"]
     controller_manager_prefix = "python.exe" if os.name == "nt" else ""
     trajectory_controller_spawner = Node(
@@ -44,7 +44,7 @@ def get_ros2_nodes(*args):
         executable="spawner",
         output="screen",
         prefix=controller_manager_prefix,
-        arguments=["spotarm_joint_trajectory_controller", "-c", "/controller_manager"]
+        arguments=["joint_trajectory_controller", "-c", "/controller_manager"]
         + controller_manager_timeout,
     )
     joint_state_broadcaster_spawner = Node(
@@ -52,16 +52,16 @@ def get_ros2_nodes(*args):
         executable="spawner",
         output="screen",
         prefix=controller_manager_prefix,
-        arguments=["spotarm_joint_state_broadcaster", "-c", "/controller_manager"]
+        arguments=["joint_state_broadcaster", "-c", "/controller_manager"]
         + controller_manager_timeout,
     )
-    tiago_gripper_joint_trajectory_controller_spawner = Node(
+    robotiq_gripper_controller = Node(
         package="controller_manager",
         executable="spawner",
         output="screen",
         prefix=controller_manager_prefix,
         arguments=[
-            "tiago_gripper_joint_trajectory_controller",
+            "robotiq_gripper_controller",
             "-c",
             "/controller_manager",
         ]
@@ -71,12 +71,12 @@ def get_ros2_nodes(*args):
     ros2_control_spawners = [
         trajectory_controller_spawner,
         joint_state_broadcaster_spawner,
-        tiago_gripper_joint_trajectory_controller_spawner,
+        #robotiq_gripper_controller,
     ]
 
     # Wait for the simulation to be ready to start RViz, the navigation and spawners
     waiting_nodes = WaitForControllerConnection(
-        target_driver=spotarm_driver, nodes_to_start=ros2_control_spawners
+        target_driver=gen3_driver, nodes_to_start=ros2_control_spawners
     )
 
     initial_manipulator_positioning = Node(
@@ -85,7 +85,7 @@ def get_ros2_nodes(*args):
         output="screen",
     )
 
-    return [spotarm_driver, waiting_nodes, initial_manipulator_positioning]
+    return [gen3_driver, waiting_nodes, initial_manipulator_positioning]
 
 
 def generate_launch_description():

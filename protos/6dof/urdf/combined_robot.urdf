@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="gen3_6dof_with_robotiq_2f_140">
   <!-- Kinova Gen3 6DOF Arm -->
-  <link name="base_link">
+  <link name="gen3_base_link">
     <inertial>
       <origin xyz="-0.000648 -0.000166 0.084487" rpy="0 0 0" />
       <mass value="1.697" />
@@ -47,7 +47,7 @@
   </link>
   <joint name="joint_1" type="continuous">
     <origin xyz="0 0 0.15643" rpy="-3.1416 0.0 0.0" />
-    <parent link="base_link" />
+    <parent link="gen3_base_link" />
     <child link="shoulder_link" />
     <axis xyz="0 0 1" />
     <limit effort="39" velocity="1.3963" />
