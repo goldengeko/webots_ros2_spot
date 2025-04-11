@@ -1,0 +1,322 @@
+#VRML_SIM R2025a utf8
+# license: Apache License 2.0
+# license url: http://www.apache.org/licenses/LICENSE-2.0
+# This is a proto file for Webots for the Kinova
+# Extracted from: /home/guts/kortex_ws/src/ros2_kortex/kortex_description/arms/gen3/6dof/urdf/GEN3-6DOF_NO-VISION_URDF_ARM_V01.urdf
+
+PROTO Kinova [
+  field  SFVec3f     translation     0 0 0
+  field  SFRotation  rotation        0 0 1 0
+  field  SFString    name            "Kinova"  # Is `Robot.name`.
+  field  SFString    controller      "void"                          # Is `Robot.controller`.
+  field  MFString    controllerArgs  []                              # Is `Robot.controllerArgs`.
+  field  SFString    customData      ""                              # Is `Robot.customData`.
+  field  SFBool      supervisor      FALSE                           # Is `Robot.supervisor`.
+  field  SFBool      synchronization TRUE                            # Is `Robot.synchronization`.
+  field  SFBool      selfCollision   FALSE                           # Is `Robot.selfCollision`.
+  field  MFNode      frontExtension   []
+]
+{
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    controller IS controller
+    controllerArgs IS controllerArgs
+    customData IS customData
+    supervisor IS supervisor
+    synchronization IS synchronization
+    selfCollision IS selfCollision
+    children [
+      Shape {
+        appearance DEF base_link_material PBRAppearance {
+          baseColor 0.752940 0.752940 0.752940
+          roughness 1.000000
+          metalness 0
+        }
+        geometry DEF base_link Mesh {
+          url "/home/guts/kortex_ws/src/ros2_kortex/kortex_description/arms/gen3/6dof/meshes/base_link.STL"
+        }
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0.000000 -0.000007 -1.000000
+          anchor 0.000000 0.000000 0.156430
+        }
+        device [
+          RotationalMotor {
+            name "joint_1"
+            maxVelocity 1.3963
+            maxTorque 39.0
+          }
+          PositionSensor {
+            name "joint_1_sensor"
+          }
+        ]
+        endPoint Solid {
+          translation 0.000000 0.000000 0.156430
+          rotation -1.000000 -0.000000 0.000000 3.141600
+          children [
+            Shape {
+              appearance DEF shoulder_link_material PBRAppearance {
+                baseColor 0.752940 0.752940 0.752940
+                roughness 1.000000
+                metalness 0
+              }
+              geometry DEF shoulder_link Mesh {
+                url "/home/guts/kortex_ws/src/ros2_kortex/kortex_description/arms/gen3/6dof/meshes/shoulder_link.STL"
+              }
+            }
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis 0.000000 -1.000000 -0.000004
+                anchor 0.000000 0.005375 -0.128380
+              }
+              device [
+                RotationalMotor {
+                  name "joint_2"
+                  maxVelocity 1.3963
+                  minPosition -2.24
+                  maxPosition 2.24
+                  maxTorque 39.0
+                }
+                PositionSensor {
+                  name "joint_2_sensor"
+                }
+              ]
+              endPoint Solid {
+                translation 0.000000 0.005375 -0.128380
+                rotation 1.000000 0.000000 0.000000 1.570800
+                children [
+                  Shape {
+                    appearance DEF bicep_link_material PBRAppearance {
+                      baseColor 0.752940 0.752940 0.752940
+                      roughness 1.000000
+                      metalness 0
+                    }
+                    geometry DEF bicep_link Mesh {
+                      url "/home/guts/kortex_ws/src/ros2_kortex/kortex_description/arms/gen3/6dof/meshes/bicep_link.STL"
+                    }
+                  }
+                  HingeJoint {
+                    jointParameters HingeJointParameters {
+                      axis 0.000000 0.000007 -1.000000
+                      anchor 0.000000 -0.410000 0.000000
+                    }
+                    device [
+                      RotationalMotor {
+                        name "joint_3"
+                        maxVelocity 1.3963
+                        minPosition -2.57
+                        maxPosition 2.57
+                        maxTorque 39.0
+                      }
+                      PositionSensor {
+                        name "joint_3_sensor"
+                      }
+                    ]
+                    endPoint Solid {
+                      translation 0.000000 -0.410000 0.000000
+                      rotation 1.000000 0.000000 -0.000000 3.141600
+                      children [
+                        Shape {
+                          appearance DEF forearm_link_material PBRAppearance {
+                            baseColor 0.752940 0.752940 0.752940
+                            roughness 1.000000
+                            metalness 0
+                          }
+                          geometry DEF forearm_link Mesh {
+                            url "/home/guts/kortex_ws/src/ros2_kortex/kortex_description/arms/gen3/6dof/meshes/forearm_link.STL"
+                          }
+                        }
+                        HingeJoint {
+                          jointParameters HingeJointParameters {
+                            axis 0.000000 -1.000000 -0.000004
+                            anchor 0.000000 0.208430 -0.006375
+                          }
+                          device [
+                            RotationalMotor {
+                              name "joint_4"
+                              maxVelocity 1.2218
+                              maxTorque 9.0
+                            }
+                            PositionSensor {
+                              name "joint_4_sensor"
+                            }
+                          ]
+                          endPoint Solid {
+                            translation 0.000000 0.208430 -0.006375
+                            rotation 1.000000 0.000000 0.000000 1.570800
+                            children [
+                              Shape {
+                                appearance DEF spherical_wrist_1_link_material PBRAppearance {
+                                  baseColor 0.752940 0.752940 0.752940
+                                  roughness 1.000000
+                                  metalness 0
+                                }
+                                geometry DEF spherical_wrist_1_link Mesh {
+                                  url "/home/guts/kortex_ws/src/ros2_kortex/kortex_description/arms/gen3/6dof/meshes/spherical_wrist_1_link.STL"
+                                }
+                              }
+                              HingeJoint {
+                                jointParameters HingeJointParameters {
+                                  axis 0.000000 1.000000 -0.000004
+                                  anchor 0.000000 -0.000175 -0.105930
+                                }
+                                device [
+                                  RotationalMotor {
+                                    name "joint_5"
+                                    maxVelocity 1.2218
+                                    minPosition -2.09
+                                    maxPosition 2.09
+                                    maxTorque 9.0
+                                  }
+                                  PositionSensor {
+                                    name "joint_5_sensor"
+                                  }
+                                ]
+                                endPoint Solid {
+                                  translation 0.000000 -0.000175 -0.105930
+                                  rotation -1.000000 0.000000 0.000000 1.570800
+                                  children [
+                                    Shape {
+                                      appearance DEF spherical_wrist_2_link_material PBRAppearance {
+                                        baseColor 0.752940 0.752940 0.752940
+                                        roughness 1.000000
+                                        metalness 0
+                                      }
+                                      geometry DEF spherical_wrist_2_link Mesh {
+                                        url "/home/guts/kortex_ws/src/ros2_kortex/kortex_description/arms/gen3/6dof/meshes/spherical_wrist_2_link.STL"
+                                      }
+                                    }
+                                    HingeJoint {
+                                      jointParameters HingeJointParameters {
+                                        axis 0.000000 -1.000000 -0.000004
+                                        anchor 0.000000 0.105930 -0.000175
+                                      }
+                                      device [
+                                        RotationalMotor {
+                                          name "joint_6"
+                                          maxVelocity 1.2218
+                                          maxTorque 9.0
+                                        }
+                                        PositionSensor {
+                                          name "joint_6_sensor"
+                                        }
+                                      ]
+                                      endPoint Solid {
+                                        translation 0.000000 0.105930 -0.000175
+                                        rotation 1.000000 0.000000 0.000000 1.570800
+                                        children [
+                                          Shape {
+                                            appearance DEF bracelet_link_material PBRAppearance {
+                                              baseColor 0.752940 0.752940 0.752940
+                                              roughness 1.000000
+                                              metalness 0
+                                            }
+                                            geometry DEF bracelet_no_vision_link Mesh {
+                                              url "/home/guts/kortex_ws/src/ros2_kortex/kortex_description/arms/gen3/6dof/meshes/bracelet_no_vision_link.STL"
+                                            }
+                                          }
+                                          Transform {
+                                            translation 0 -0.18 0.26
+                                            rotation -0.577350 -0.577354 -0.577346 -2.094389
+                                            children IS frontExtension
+                                          }
+                                        ]
+                                        name "bracelet_link"
+                                        boundingObject USE bracelet_no_vision_link
+                                        physics Physics {
+                                          density -1
+                                          mass 0.364000
+                                          centerOfMass [ -0.000093 0.000132 -0.022905 ]
+                                          inertiaMatrix [
+                                            2.140000e-04 2.230000e-04 2.400000e-04
+                                            0.000000e+00 1.000000e-06 -2.000000e-06
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  ]
+                                  name "spherical_wrist_2_link"
+                                  boundingObject USE spherical_wrist_2_link
+                                  physics Physics {
+                                    density -1
+                                    mass 0.678000
+                                    centerOfMass [ -0.000001 0.046429 -0.008704 ]
+                                    inertiaMatrix [
+                                      1.685000e-03 4.000000e-04 1.696000e-03
+                                      0.000000e+00 0.000000e+00 2.550000e-04
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                            name "spherical_wrist_1_link"
+                            boundingObject USE spherical_wrist_1_link
+                            physics Physics {
+                              density -1
+                              mass 0.678000
+                              centerOfMass [ -0.000001 0.008486 -0.062937 ]
+                              inertiaMatrix [
+                                1.645000e-03 1.666000e-03 3.890000e-04
+                                0.000000e+00 0.000000e+00 -2.340000e-04
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                      name "forearm_link"
+                      boundingObject USE forearm_link
+                      physics Physics {
+                        density -1
+                        mass 0.930000
+                        centerOfMass [ 0.000018 0.076168 -0.013970 ]
+                        inertiaMatrix [
+                          8.292000e-03 6.280000e-04 8.464000e-03
+                          -1.000000e-06 0.000000e+00 4.320000e-04
+                        ]
+                      }
+                    }
+                  }
+                ]
+                name "bicep_link"
+                boundingObject USE bicep_link
+                physics Physics {
+                  density -1
+                  mass 1.262000
+                  centerOfMass [ 0.000035 -0.208207 -0.018890 ]
+                  inertiaMatrix [
+                    4.675200e-02 8.500000e-04 4.718800e-02
+                    -9.000000e-06 0.000000e+00 -9.800000e-05
+                  ]
+                }
+              }
+            }
+          ]
+          name "shoulder_link"
+          boundingObject USE shoulder_link
+          physics Physics {
+            density -1
+            mass 1.377000
+            centerOfMass [ -0.000023 -0.010364 -0.073360 ]
+            inertiaMatrix [
+              4.570000e-03 4.831000e-03 1.409000e-03
+              1.000000e-06 2.000000e-06 4.480000e-04
+            ]
+          }
+        }
+      }
+    ]
+    name IS name
+    boundingObject USE base_link
+    physics Physics {
+      density -1
+      mass 1.697000
+      centerOfMass [ -0.000648 -0.000166 0.084487 ]
+      inertiaMatrix [
+        4.622000e-03 4.495000e-03 2.079000e-03
+        9.000000e-06 6.000000e-05 9.000000e-06
+      ]
+    }
+  }
+}
