@@ -8,17 +8,18 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/pipes/protos/PipeSection.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/solids/protos/SolidBox.proto"
 EXTERNPROTO "../protos/Spot.proto"
-EXTERNPROTO "../protos/SpotArm.proto"
 EXTERNPROTO "../protos/ImageBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/microsoft/protos/Kinect.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/velodyne/protos/VelodynePuck.proto"
+EXTERNPROTO "../protos/protos/GEN3-6DOFVISIONURDFARMV01.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/robotiq/protos/Robotiq2f140Gripper.proto"
 
 WorldInfo {
   title "Spot_Maze"
 }
 DEF Viewpoint Viewpoint {
-  orientation -0.3514025745846757 -0.08398531544295117 0.9324498363800645 3.580145909966252
-  position 20.0206486298158 10.533063907228222 19.231879117926756
+  orientation -0.05333153808287915 0.08109209065686589 0.9952787649089139 1.1827152008460684
+  position 6.780056921872948 -3.660570170265439 1.6891112995964253
 }
 TexturedBackground {
   texture "factory"
@@ -356,16 +357,12 @@ DEF Spot Spot {
   controller "<extern>"
   supervisor TRUE
   frontExtension [
-    SpotArm {
-      translation 0 0 -0.094
-      rotation -0.5773509358537164 0.5773479358540498 0.5773519358536053 2.0944
-      controller "<extern>"
-      gripperCam [
-        Camera {
-          translation 0.19 0 0
-          name "gripper camera"
-          width 1280
-          height 720
+    GEN3-6DOFVISIONURDFARMV01 {
+      rotation -0.577349935856137 0.577349935856137 0.5773509358560258 2.09439
+      toolSlot [
+        Robotiq2f140Gripper {
+          translation 3.82717e-15 -1.59216e-07 -0.06
+          rotation 0.7071067811862364 -0.7071067811862364 9.381857096790023e-07 3.14159
         }
       ]
     }
@@ -380,6 +377,22 @@ DEF Spot Spot {
       translation 0 0.04 0.09
       rotation -0.577349935856137 0.577349935856137 0.5773509358560258 2.09439
       name "Velodyne_Puck"
+    }
+  ]
+  rearExtension [
+    Solid {
+      translation 0 0.05 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+          }
+          geometry Box {
+            size 0.1 0.1 0.1
+          }
+        }
+      ]
+      name "solid(1)"
     }
   ]
 }
@@ -512,7 +525,6 @@ Solid {
   ]
   name "aruco"
 }
-# Third Arena
 SolidBox {
   translation 0.589985 16.28 0.85
   rotation 0 0 1 1.5708
@@ -620,37 +632,61 @@ DEF DropBox1 ImageBox {
   translation 5.23 18.87 0
   rotation 0 0 1 1.5708
   name "cube_drop_box_1"
-  legAppearance PBRAppearance {baseColor 1 0 0 roughness 0.5 metalness 0}
+  legAppearance PBRAppearance {
+    baseColor 1 0 0
+    roughness 0.5
+    metalness 0
+  }
 }
 DEF DropBox2 ImageBox {
   translation 0.43 18.87 0
   rotation 0 0 1 1.5708
   name "cube_drop_box_2"
-  legAppearance PBRAppearance {baseColor 0 1 0 roughness 0.5 metalness 0}
+  legAppearance PBRAppearance {
+    baseColor 0 1 0
+    roughness 0.5
+    metalness 0
+  }
 }
 DEF DropBox3 ImageBox {
   translation -3.97 18.87 0
   rotation 0 0 1 1.5708
   name "cube_drop_box_3"
-  legAppearance PBRAppearance {baseColor 0 0 1 roughness 0.5 metalness 0}
+  legAppearance PBRAppearance {
+    baseColor 0 0 1
+    roughness 0.5
+    metalness 0
+  }
 }
 DEF YellowDropBox_1 ImageBox {
   translation 7.23 22.7 0
   rotation 0 0 -1 -5.307179586466759e-06
   name "yellow_cube_drop_box_1"
-  legAppearance PBRAppearance {baseColor 1 1 0 roughness 0.5 metalness 0}
+  legAppearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
 }
 DEF YellowDropBox_2 ImageBox {
   translation 2.47 22.7 0
   rotation 0 0 -1 -5.307179586466759e-06
   name "yellow_cube_drop_box_2"
-  legAppearance PBRAppearance {baseColor 1 1 0 roughness 0.5 metalness 0}
+  legAppearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
 }
 DEF YellowDropBox_3 ImageBox {
   translation -2.07 22.7 0
   rotation 0 0 -1 -5.307179586466759e-06
   name "yellow_cube_drop_box_3"
-  legAppearance PBRAppearance {baseColor 1 1 0 roughness 0.5 metalness 0}
+  legAppearance PBRAppearance {
+    baseColor 1 1 0
+    roughness 0.5
+    metalness 0
+  }
 }
 DEF RED_1 SolidBox {
   translation 9.04 20.4 0.535
