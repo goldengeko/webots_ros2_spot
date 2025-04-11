@@ -25,15 +25,7 @@ def main():
         "/joint_trajectory_controller/follow_joint_trajectory",
     )
 
-    # Create an action client for the robotiq_gripper_controller
-    gripper_client = ActionClient(
-        node,
-        FollowJointTrajectory,
-        "/robotiq_gripper_controller/follow_joint_trajectory",
-    )
-
     arm_client.wait_for_server()
-    gripper_client.wait_for_server()
 
     # Wait for simulation clock to initiate
     while clock_msg_count < 40:
@@ -51,30 +43,19 @@ def main():
     ]
     arm_point = JointTrajectoryPoint()
     arm_point.positions = [
-        0.0,
-        math.radians(180),
-        math.radians(180),
-        0.0,
-        0.0,
-        0.0,
+        3.14,  # Joint 1
+        1.9,   # Joint 2
+        3.0,   # Joint 3
+        0.0,   # Joint 4
+        1.0,   # Joint 5
+        -1.57, # Joint 6
     ]
-    arm_point.time_from_start.sec = 5  # Set a duration for the motion
+    arm_point.velocities = [0.0] * 6  # Set velocities to 0
+    arm_point.time_from_start.sec = 3  # Set a duration for the motion
     arm_goal_msg.trajectory.points.append(arm_point)
 
-    # Create a goal request to set gripper joint positions
-    gripper_goal_msg = FollowJointTrajectory.Goal()
-    gripper_goal_msg.trajectory.joint_names = [
-        "gripper_left_finger_joint",
-        "gripper_right_finger_joint",
-    ]
-    gripper_point = JointTrajectoryPoint()
-    gripper_point.positions = [0.0, 0.0]  # Fully close the gripper
-    gripper_point.time_from_start.sec = 2  # Set a duration for the motion
-    gripper_goal_msg.trajectory.points.append(gripper_point)
-
-    # Send action goals
+    # Send action goal
     arm_client.send_goal_async(arm_goal_msg)
-    gripper_client.send_goal_async(gripper_goal_msg)
 
     node.destroy_node()
 
