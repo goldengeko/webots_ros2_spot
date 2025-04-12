@@ -715,6 +715,14 @@
     <axis xyz="-1 0 0"/>
     <limit effort="1000" lower="0" upper="0.7" velocity="2.0"/>
   </joint>
+  <!-- <joint name="left_outer_knuckle_joint" type="revolute">
+    <origin rpy="2.2957963267948966 0 0" xyz="0 -0.030601 0.054905"/>
+    <parent link="robotiq_2f_base_link"/>
+    <child link="left_outer_knuckle"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="1000" lower="-0.725" upper="0.725" velocity="2.0"/>
+    <mimic joint="finger_joint" multiplier="-1" offset="0"/>
+  </joint> -->
   <joint name="left_outer_finger_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0.01821998610742 0.0260018192872234"/>
     <parent link="left_outer_knuckle"/>
@@ -856,21 +864,20 @@
     <child link="front"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
-  <link name="gripper_centre">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+  <!-- <link name="gripper_centre">
+    <collision>
       <geometry>
-        <sphere radius="0.01"/>
+        <box size="0.1 0.1 0.1"/>
       </geometry>
-    </visual>
-  </link>
-  <joint name="gripper_centre_joint" type="fixed">
-    <parent link="front"/>
+    </collision>
+  </link> -->
+  <!-- <joint name="gripper_centre_joint" type="fixed">
+    <parent link="end_effector_link"/>
     <child link="gripper_centre"/>
     <origin xyz="0 0 -0.18" rpy="0 0 0"/>
   </joint>
   <joint name="gripper_right_finger_joint" type="prismatic">
-    <parent link="front"/>
+    <parent link="end_effector_link"/>
     <child link="gripper_right_finger_link"/>
     <axis xyz="1 0 0"/>
     <origin xyz="0 0.0005 -0.007" rpy="0 0 0"/>
@@ -915,7 +922,7 @@
     </collision>
   </link>
   <joint name="gripper_left_finger_joint" type="prismatic">
-    <parent link="front"/>
+    <parent link="end_effector_link"/>
     <child link="gripper_left_finger_link"/>
     <axis xyz="1 0.000093 0"/>
     <origin xyz="0 0 0" rpy="0 0 3.1415"/>
@@ -958,7 +965,7 @@
         <box size="0.03213 0.02959 0.01487"/>
       </geometry>
     </collision>
-  </link>
+  </link> -->
   <link name="cap screw(19)">
   </link>
   <joint name="front_cap screw(19)_joint" type="fixed">

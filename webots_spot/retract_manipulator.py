@@ -22,7 +22,7 @@ def main():
     arm_client = ActionClient(
         node,
         FollowJointTrajectory,
-        "/joint_trajectory_controller/follow_joint_trajectory",
+        "/kinova_joint_trajectory_controller/follow_joint_trajectory",
     )
 
     arm_client.wait_for_server()

@@ -44,7 +44,7 @@ def get_ros2_nodes(*args):
         executable="spawner",
         output="screen",
         prefix=controller_manager_prefix,
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"]
+        arguments=["kinova_joint_trajectory_controller", "-c", "/controller_manager"]
         + controller_manager_timeout,
     )
     joint_state_broadcaster_spawner = Node(
