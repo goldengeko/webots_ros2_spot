@@ -51,6 +51,9 @@ def generate_launch_description():
         description_kinematics = {
             "robot_description_kinematics": load_yaml("moveit_kinematics.yaml")
         }
+        description_joint_limits = {
+            "robot_description_planning": load_yaml("moveit_joint_limits.yaml")
+        }
 
         sim_time = {"use_sim_time": True}
 
@@ -92,6 +95,7 @@ def generate_launch_description():
                     description,
                     description_semantic,
                     description_kinematics,
+                    description_joint_limits,
                     moveit_controllers,
                     movegroup,
                     sim_time,
