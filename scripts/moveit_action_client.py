@@ -38,12 +38,12 @@ class MoveGroupActionClient(Node):
 
         joints = {}
         joints["Slider11"] = 0
-        joints["spotarm_1_joint"] = 0
-        joints["spotarm_2_joint"] = 3.1415
-        joints["spotarm_3_joint"] = 3
-        joints["spotarm_4_joint"] = 0
-        joints["spotarm_5_joint"] = 0.2
-        joints["spotarm_6_joint"] = 0
+        joints["joint_1"] = 0
+        joints["joint_2"] = 3.1415
+        joints["joint_3"] = 3
+        joints["joint_4"] = 0
+        joints["joint_5"] = 0.2
+        joints["joint_6"] = 0
 
         constraints = Constraints()
         for joint, angle in joints.items():

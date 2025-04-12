@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Launch Webots Universal Robot simulation with MoveIt2."""
+"""Launch Webots kinova simulation with MoveIt2."""
 
 import os
 import pathlib
@@ -47,12 +47,11 @@ def generate_launch_description():
     if "moveit" in get_packages_with_prefixes():
         # Configuration
         description = {"robot_description": load_file("spot.urdf")}
-        description_semantic = {
-            "robot_description_semantic": load_file("moveit_spot_arm.srdf")
-        }
+        description_semantic = {"robot_description_semantic": load_file("gen3.srdf")}
         description_kinematics = {
             "robot_description_kinematics": load_yaml("moveit_kinematics.yaml")
         }
+
         sim_time = {"use_sim_time": True}
 
         # Rviz node

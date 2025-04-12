@@ -11,14 +11,15 @@ EXTERNPROTO "../protos/Spot.proto"
 EXTERNPROTO "../protos/ImageBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/microsoft/protos/Kinect.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/velodyne/protos/VelodynePuck.proto"
-EXTERNPROTO "../protos/Gen36dofWithRobotiq2f140.proto"
+EXTERNPROTO "../protos/GEN3-6DOFVISIONURDFARMV01.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/robotiq/protos/Robotiq2f140Gripper.proto"
 
 WorldInfo {
   title "Spot_Maze"
 }
 DEF Viewpoint Viewpoint {
-  orientation 0.09977968123971637 0.7084205858314705 -0.6987018597240863 0.47320493388656637
-  position 1.0748165353848584 2.876290299568683 4.723085834578264
+  orientation -0.0014208585293725995 0.02791633901650146 0.9996092532469651 4.765257000927393
+  position 8.362321832657289 2.6875863867572116 1.892701373272897
 }
 TexturedBackground {
   texture "factory"
@@ -356,12 +357,14 @@ DEF Spot Spot {
   controller "<extern>"
   supervisor TRUE
   frontExtension [
-    Gen36dofWithRobotiq2f140 {
-      rotation -0.577349935856137 0.577349935856137 0.5773509358560258 2.09439
-      name "Gen3"
-      controller "<extern>"
-      supervisor TRUE
-      selfCollision TRUE
+    GEN3-6DOFVISIONURDFARMV01 {
+      rotation 1 0 0 -1.5707953071795862
+      toolSlot [
+        Robotiq2f140Gripper {
+          translation 5.49576e-09 -1.5372e-07 -0.06
+          rotation 0.7071067811862364 -0.7071067811862364 9.381857096790023e-07 3.14159
+        }
+      ]
     }
     Kinect {
       translation 0 -0.007 -0.240831
@@ -378,11 +381,14 @@ DEF Spot Spot {
   ]
   rearExtension [
     Solid {
-      translation 0 0.05 0
+      translation 0 0.06 0
       children [
         Shape {
-          appearance PBRAppearance {
-            baseColor 0 0 0
+          appearance Appearance {
+            material Material {
+              diffuseColor 0 0 0
+              shininess 0
+            }
           }
           geometry Box {
             size 0.1 0.1 0.1

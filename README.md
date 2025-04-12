@@ -5,7 +5,7 @@
 This is a ROS 2 package to simulate the Boston Dynamics spot in [webots](https://cyberbotics.com/). Spot is able to walk around, to sit, standup and lie down. We also attached some sensors on spot, like a kinect and a 3D laser.
 The world contains apriltags, a red line to test lane follower and objects for manipulation tasks.
 
-![Spot](https://github.com/MASKOR/webots_ros2_spot/blob/main/spot.jpg)
+![Spot](spot.png)
 
 ## Prerequisites
 
@@ -52,29 +52,29 @@ Starting the simulation:
 ros2 launch webots_spot spot_launch.py
 ```
 
-To launch navigation with Rviz2:
+Send joint positions
 ```
-ros2 launch webots_spot nav_launch.py set_initial_pose:=true
-```
-
-To launch mapping with Slamtoolbox:
-```
-ros2 launch webots_spot slam_launch.py
-```
-
-Starting MoveIt:
-```
-ros2 launch webots_spot moveit_launch.py
-```
-
-Teleop keyboard:
-```
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
-# OR ros2 run spot_teleop spot_teleop_keyboard for body_pose control as well
+ros2 topic pub --once /kinova_joint_trajectory_controller/joint_trajectory trajectory_msgs/JointTrajectory "{
+  header: { stamp: { sec: 0, nanosec: 0 }, frame_id: '' },
+  joint_names: ['joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5', 'joint_6'],
+  points: [
+    {
+      positions: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      velocities: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      accelerations: [],
+      effort: [],
+      time_from_start: { sec: 3, nanosec: 0 }
+    }
+  ]
+}"
 ```
 
-## To switch Arenas
+Motion Planning with MoveIt
+```
+ros2 launch webots_spot moveit_launch.py 
+```
 
-1) Change false to true in https://github.com/MASKOR/webots_ros2_spot/blob/main/resource/spot_control.urdf#L5
 
-2) Change map.yaml to map_arena3.yaml https://github.com/MASKOR/webots_ros2_spot/blob/main/launch/nav_launch.py#L15 (map of arena 2 not created)
+## Troubleshoot ERROR with mesh/stl
+
+copy the 2f_140 folder in "opt/ros/humble/share/robotiq_description/meshes/visual" and "opt/ros/humble/share/robotiq_description/meshes/collision"
