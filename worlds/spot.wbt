@@ -17,8 +17,8 @@ WorldInfo {
   title "Spot_Maze"
 }
 DEF Viewpoint Viewpoint {
-  orientation 0.18693901647136124 0.3914072673947195 -0.901029497381367 1.0205715130521207
-  position 7.705824337276308 1.1430992559687336 2.4193493512375657
+  orientation 0.0991462016018402 0.2421345073112816 -0.9651636706160517 1.2925790715266747
+  position 7.304879315030305 5.246163019075337 3.2303192538328624
 }
 TexturedBackground {
   texture "factory"
@@ -363,14 +363,16 @@ DEF Spot Spot {
       supervisor TRUE
       vision [
         RangeFinder {
+          translation 0.03 2.20392e-07 0.06
+          rotation 0 0 1 1.5708
           name "kinova_depth"
           width 480
           height 270
           maxRange 10
         }
         Camera {
-          translation 0.0200002 0.04 -0.05
-          rotation -0.577349935856137 0.5773509358560258 0.577349935856137 2.09439
+          translation -0.0199998 0.01 0.07
+          rotation -7.192349999979703e-09 2.375719999993296e-06 -0.999999999997178 -1.5707953071795862
           name "kinova_color"
           width 640
           height 480

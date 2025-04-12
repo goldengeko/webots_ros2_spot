@@ -611,9 +611,6 @@ PROTO Gen36dofWithRobotiq2f140 [
                                           Transform {
                                             translation 0.000000 0.000000 -0.061525
                                             rotation -1 0 0 1.5708
-                                            children IS toolSlot
-                                          }
-                                          Transform {
                                             children IS vision
                                           }
                                         ]
