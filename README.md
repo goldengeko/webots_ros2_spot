@@ -5,7 +5,7 @@
 This is a ROS 2 package to simulate the Boston Dynamics spot in [webots](https://cyberbotics.com/). Spot is able to walk around, to sit, standup and lie down. We also attached some sensors on spot, like a kinect and a 3D laser.
 The world contains apriltags, a red line to test lane follower and objects for manipulation tasks.
 
-![Spot](https://github.com/MASKOR/webots_ros2_spot/blob/main/spot.jpg)
+![Spot](spot.png)
 
 ## Prerequisites
 
@@ -69,6 +69,12 @@ ros2 topic pub --once /joint_trajectory_controller/joint_trajectory trajectory_m
 }"
 ```
 
-## If ERROR with mesh/stl
+Motion Planning with MoveIt
+```
+ros2 launch webots_spot moveit_launch.py 
+```
 
-Fix will be uploaded soon
+
+## Troubleshoot ERROR with mesh/stl
+
+copy the 2f_140 folder in "opt/ros/humble/share/robotiq_description/meshes/visual" and "opt/ros/humble/share/robotiq_description/meshes/collision"
