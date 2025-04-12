@@ -21,3 +21,4 @@ robotiq_gripper_controller:
   joints:
     - finger_joint
     - right_outer_knuckle_joint
+    
