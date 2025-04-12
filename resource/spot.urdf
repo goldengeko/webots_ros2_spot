@@ -464,7 +464,7 @@
 
   <!-- Connecting Joint: Attach Gripper to Arm -->
   <joint name="arm_to_gripper_joint" type="fixed">
-    <origin xyz="0 0 -0.01" rpy="0 0 -1.5708" />
+    <origin xyz="0 0 -0.01" rpy="0 0 1.5708" />
     <parent link="end_effector_link" />
     <child link="robotiq_2f_base_link" />
   </joint>

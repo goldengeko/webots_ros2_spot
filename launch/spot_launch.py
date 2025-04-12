@@ -71,7 +71,7 @@ def get_ros2_nodes(*args):
     ros2_control_spawners = [
         trajectory_controller_spawner,
         joint_state_broadcaster_spawner,
-        # robotiq_gripper_controller,
+        robotiq_gripper_controller,
     ]
 
     # Wait for the simulation to be ready to start RViz, the navigation and spawners

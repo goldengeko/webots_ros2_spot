@@ -29,13 +29,7 @@ joint_trajectory_controller:
 
 robotiq_gripper_controller:
   ros__parameters:
-    joints:
-      - finger_joint
-      - left_inner_finger_joint
-      - left_inner_knuckle_joint
-      - right_outer_knuckle_joint
-      - right_inner_finger_joint
-      - right_inner_knuckle_joint
+    joint: finger_joint
     command_interfaces:
       - position
     state_interfaces:
