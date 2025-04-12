@@ -13,7 +13,8 @@ PROTO Gen36dofWithRobotiq2f140 [
   field  SFString    customData      ""                          # Is `Robot.customData`.
   field  SFBool      supervisor      FALSE                       # Is `Robot.supervisor`.
   field  SFBool      synchronization TRUE                        # Is `Robot.synchronization`.
-  field  SFBool      selfCollision   FALSE                       # Is `Robot.selfCollision`.
+  field  SFBool      selfCollision   TRUE                       # Is `Robot.selfCollision`.
+  field  MFNode      vision          [] #Camera Node
 ]
 {
   Robot {
@@ -606,6 +607,11 @@ PROTO Gen36dofWithRobotiq2f140 [
                                               density -1
                                               mass 0.000000
                                             }
+                                          }
+                                          Transform {
+                                            translation 0.000000 0.000000 -0.061525
+                                            rotation -1 0 0 1.5708
+                                            children IS vision
                                           }
                                         ]
                                         name "bracelet_link"
