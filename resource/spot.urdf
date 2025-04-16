@@ -341,7 +341,7 @@
     <parent link="bicep_link" />
     <child link="forearm_link" />
     <axis xyz="0 0 1" />
-    <limit lower="-2.57" upper="2.57" effort="39" velocity="1.3963" />
+    <limit lower="-3.2" upper="3.2" effort="39" velocity="1.3963" />
   </joint>
   <link name="spherical_wrist_1_link">
     <inertial>
@@ -713,16 +713,8 @@
     <parent link="robotiq_2f_base_link"/>
     <child link="left_outer_knuckle"/>
     <axis xyz="-1 0 0"/>
-    <limit effort="1000" lower="0" upper="0.7" velocity="2.0"/>
+    <limit effort="1000" lower="0" upper="0.8" velocity="2.0"/>
   </joint>
-  <!-- <joint name="left_outer_knuckle_joint" type="revolute">
-    <origin rpy="2.2957963267948966 0 0" xyz="0 -0.030601 0.054905"/>
-    <parent link="robotiq_2f_base_link"/>
-    <child link="left_outer_knuckle"/>
-    <axis xyz="-1 0 0"/>
-    <limit effort="1000" lower="-0.725" upper="0.725" velocity="2.0"/>
-    <mimic joint="finger_joint" multiplier="-1" offset="0"/>
-  </joint> -->
   <joint name="left_outer_finger_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0.01821998610742 0.0260018192872234"/>
     <parent link="left_outer_knuckle"/>
@@ -756,7 +748,7 @@
     <parent link="robotiq_2f_base_link"/>
     <child link="right_outer_knuckle"/>
     <axis xyz="1 0 0"/>
-    <limit effort="1000" lower="-0.725" upper="0.725" velocity="2.0"/>
+    <limit effort="1000" lower="-0.8" upper="0.0" velocity="2.0"/>
     <mimic joint="finger_joint" multiplier="-1" offset="0"/>
   </joint>
   <joint name="right_outer_finger_joint" type="fixed">

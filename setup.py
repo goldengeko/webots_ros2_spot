@@ -52,6 +52,7 @@ setup(
             "gpp_stacker = " + package_name + ".gpp_stacker:main",
             "retract_manipulator = " + package_name + ".retract_manipulator:main",
             "arena_modifier = " + package_name + ".arena_modifier:main",
+            "set_ready_position = " + package_name + ".set_ready_position:main",
         ],
     },
 )

@@ -43,12 +43,12 @@ def main():
     ]
     arm_point = JointTrajectoryPoint()
     arm_point.positions = [
-        3.14,  # Joint 1
-        1.9,  # Joint 2
-        3.0,  # Joint 3
+        0.0,  # Joint 1
+        -1.9,  # Joint 2
+        -2.54,  # Joint 3
         0.0,  # Joint 4
-        1.0,  # Joint 5
-        -1.57,  # Joint 6
+        -1.0,  # Joint 5
+        1.57,  # Joint 6
     ]
     arm_point.velocities = [0.0] * 6  # Set velocities to 0
     arm_point.time_from_start.sec = 3  # Set a duration for the motion
