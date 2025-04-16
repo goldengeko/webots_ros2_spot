@@ -15,10 +15,9 @@ kinova_joint_trajectory_controller:
     - joint_5
     - joint_6
 robotiq_gripper_controller:
-  type: FollowJointTrajectory
-  action_ns: follow_joint_trajectory
-  default: true
+  type: GripperCommand
   joints:
     - finger_joint
-    - right_outer_knuckle_joint
+  action_ns: gripper_cmd
+  default: true
     

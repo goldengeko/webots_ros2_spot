@@ -11,11 +11,11 @@ class DetectPipe(Node):
     def __init__(self):
         super().__init__("detect_pipe")
         self.color_subscription = self.create_subscription(
-            Image, "/kinova_color", self.image_callback, 10
+            Image, "Gen3/kinova_color/image_color", self.image_callback, 10
         )
 
         self.depth_subscription = self.create_subscription(
-            Image, "/kinova_depth", self.depth_callback, 10
+            Image, "Gen3/kinova_depth/image", self.depth_callback, 10
         )
 
         self.bridge = CvBridge()
@@ -39,8 +39,8 @@ class DetectPipe(Node):
         self.scale_y = self.depth_height / self.color_height
 
         # Offset(tune these manually)
-        self.offset_x = -20
-        self.offset_y = 0
+        self.offset_x = -32
+        self.offset_y = -25
 
         # CSV file setup
         self.csv_file = "detected_circles.csv"
@@ -136,12 +136,12 @@ class DetectPipe(Node):
             self.get_logger().debug("No circles detected in color image")
 
         cv2.imshow("Color - Detected Circles", frame)
-        cv2.imshow("Color - Grayscale", gray)
+        # cv2.imshow("Color - Grayscale", gray)
         cv2.waitKey(1)
 
     def depth_callback(self, msg):
         self.latest_depth_frame = self.bridge.imgmsg_to_cv2(
-            msg, desired_encoding="passthrough"
+            msg, "32FC1"
         )  # This is where we get the depth
 
         if self.latest_depth_frame is None or self.latest_depth_frame.size == 0:
@@ -151,7 +151,10 @@ class DetectPipe(Node):
         # Debug
         self.get_logger().debug(f"Depth image shape: {self.latest_depth_frame.shape}")
 
-        depth_display = cv2.convertScaleAbs(self.latest_depth_frame)
+        # Normalize depth values for display
+        depth_display = cv2.convertScaleAbs(
+            self.latest_depth_frame, alpha=255.0 / np.nanmax(self.latest_depth_frame)
+        )
         depth_display = cv2.cvtColor(depth_display, cv2.COLOR_GRAY2BGR)
 
         # Overlay circles from color image
@@ -171,6 +174,36 @@ class DetectPipe(Node):
                     (x_scaled + 5, y_scaled + 5),
                     (0, 128, 255),
                     -1,
+                )
+
+                # Extract depth ROI
+                y_min = max(0, y_scaled - r_scaled)
+                y_max = min(self.depth_height, y_scaled + r_scaled)
+                x_min = max(0, x_scaled - r_scaled)
+                x_max = min(self.depth_width, x_scaled + r_scaled)
+                depth_roi = self.latest_depth_frame[y_min:y_max, x_min:x_max]
+
+                if depth_roi.size == 0:
+                    self.get_logger().warn(
+                        f"Empty depth ROI at ({x_scaled}, {y_scaled})"
+                    )
+                    continue
+
+                # Filter valid depth values
+                valid_depths = depth_roi[depth_roi > 0]
+                if valid_depths.size == 0:
+                    self.get_logger().warn(
+                        f"No valid depth values in ROI at ({x_scaled}, {y_scaled})"
+                    )
+                    continue
+
+                # Compute average depth in meters
+                avg_depth = np.mean(valid_depths)
+                distance_meters = avg_depth  # Assuming depth is already in meters
+                self.get_logger().info(
+                    f"Circle at ({x}, {y}) [scaled: ({x_scaled}, {y_scaled})], "
+                    f"radius {r} [scaled: {r_scaled}], "
+                    f"avg distance: {distance_meters:.2f} meters"
                 )
 
         cv2.imshow("Depth - Overlay", depth_display)

@@ -237,7 +237,7 @@ PROTO Gen36dofWithRobotiq2f140 [
                                                   }
                                                   HingeJoint {
                                                     jointParameters HingeJointParameters {
-                                                      axis -1.000000 -0.000000 0.000000
+                                                      axis -1.000000 0.000000 0.000000
                                                       anchor 0.000000 -0.030601 0.054905
                                                     }
                                                     device [
@@ -245,6 +245,7 @@ PROTO Gen36dofWithRobotiq2f140 [
                                                         name "finger_joint"
                                                         maxVelocity 2.0
                                                         maxPosition 0.7
+                                                        minPosition -0.7
                                                         maxTorque 1000.0
                                                       }
                                                       PositionSensor {
@@ -280,6 +281,7 @@ PROTO Gen36dofWithRobotiq2f140 [
                                                             }
                                                             HingeJoint {
                                                               jointParameters HingeJointParameters {
+                                                                axis 0 0 1.0
                                                                 anchor 0.000000 0.081755 -0.028220
                                                               }
                                                               device [
@@ -417,15 +419,15 @@ PROTO Gen36dofWithRobotiq2f140 [
                                                   }
                                                   HingeJoint {
                                                     jointParameters HingeJointParameters {
-                                                      axis -1.000000 0.000000 -0.000000
+                                                      axis 1.000000 0.000000 0.000000
                                                       anchor 0.000000 0.030601 0.054905
                                                     }
                                                     device [
                                                       RotationalMotor {
                                                         name "right_outer_knuckle_joint"
                                                         maxVelocity 2.0
-                                                        minPosition -0.725
-                                                        maxPosition 0.725
+                                                        minPosition -0.7
+                                                        maxPosition 0.0
                                                         maxTorque 1000.0
                                                       }
                                                       PositionSensor {
@@ -457,6 +459,7 @@ PROTO Gen36dofWithRobotiq2f140 [
                                                             }
                                                             HingeJoint {
                                                               jointParameters HingeJointParameters {
+                                                                axis 0 0 -1
                                                                 anchor 0.000000 0.081755 -0.028220
                                                               }
                                                               device [
@@ -547,7 +550,7 @@ PROTO Gen36dofWithRobotiq2f140 [
                                                   }
                                                   HingeJoint {
                                                     jointParameters HingeJointParameters {
-                                                      axis -1.000000 -0.000000 0.000000
+                                                      axis -1.000000 0.000000 0.000000
                                                       anchor 0.000000 0.012700 0.061420
                                                     }
                                                     device [
