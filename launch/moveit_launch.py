@@ -56,7 +56,14 @@ def generate_launch_description():
         }
 
         sim_time = {"use_sim_time": True}
-
+        planning_scene = {
+            "publish_planning_scene": True,
+            "publish_geometry_updates": True,
+            "publish_state_updates": True,
+            "publish_transforms_updates": True,
+            "publish_robot_description": True,
+            "publish_robot_description_semantic": True,
+        }
         # Rviz node
         rviz_config_file = os.path.join(
             package_dir, "resource", "moveit_visualization.rviz"
@@ -73,14 +80,16 @@ def generate_launch_description():
                     description,
                     description_semantic,
                     description_kinematics,
+                    description_joint_limits,
                     sim_time,
+                    planning_scene,
                 ],
                 condition=launch.conditions.IfCondition(use_rviz),
             )
         )
 
         # MoveIt2 node
-        movegroup = {"move_group": load_yaml("moveit_movegroup.yaml")}
+        movegroup = {"move_group": load_yaml("ompl_planning.yaml")}
         moveit_controllers = {
             "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
             "moveit_simple_controller_manager": load_yaml("moveit_controllers.yaml"),
@@ -99,8 +108,24 @@ def generate_launch_description():
                     moveit_controllers,
                     movegroup,
                     sim_time,
+                    planning_scene,
                 ],
             )
+        )
+        Node(
+            package="gen3_moveit",
+            executable="gen3_moveit",
+            output="screen",
+            parameters=[
+                description,
+                description_semantic,
+                description_kinematics,
+                description_joint_limits,
+                moveit_controllers,
+                movegroup,
+                sim_time,
+                planning_scene,
+            ],
         )
 
     else:

@@ -106,8 +106,8 @@ PROTO Gen36dofWithRobotiq2f140 [
                       RotationalMotor {
                         name "joint_3"
                         maxVelocity 1.3963
-                        minPosition -2.57
-                        maxPosition 2.57
+                        minPosition -2.8
+                        maxPosition 2.8
                         maxTorque 39.0
                       }
                       PositionSensor {
