@@ -46,6 +46,15 @@ The world contains apriltags, a red line to test lane follower and objects for m
     source install/setup.bash
     ```
 
+5. Add Kortex description and robotiq description 
+    ```
+    sudo apt install ros-humble-kortex-description ros-humble-robotiq-description
+    ```
+
+## Troubleshoot ERROR with mesh/stl
+
+copy the 2f_140 folder in "opt/ros/humble/share/robotiq_description/meshes/visual" and "opt/ros/humble/share/robotiq_description/meshes/collision"
+
 ## Start
 Starting the simulation:
 ```
@@ -73,8 +82,3 @@ Motion Planning with MoveIt
 ```
 ros2 launch webots_spot moveit_launch.py 
 ```
-
-
-## Troubleshoot ERROR with mesh/stl
-
-copy the 2f_140 folder in "opt/ros/humble/share/robotiq_description/meshes/visual" and "opt/ros/humble/share/robotiq_description/meshes/collision"
