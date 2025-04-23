@@ -74,6 +74,8 @@ jobs:
           rosdep update
           sudo apt remove -y libmagickcore-dev
           sudo apt install -y libunwind-dev graphicsmagick-libmagick-dev-compat # Nav2 dependency
+          sudo apt install -y ros-humble-gripper-controllers # Moveit2 dependency
+
           rosdep install --from-paths ./ --ignore-src -y
           vcs import --recursive src --skip-existing --input src/webots_ros2_spot/webots_ros2_spot.repos
           chmod +x src/webots_ros2/webots_ros2_driver/webots_ros2_driver/ros2_supervisor.py
