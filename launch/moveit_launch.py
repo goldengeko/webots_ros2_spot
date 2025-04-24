@@ -20,7 +20,7 @@ import os
 import pathlib
 import yaml
 import launch
-from launch.actions import LogInfo
+from launch.actions import LogInfo, DeclareLaunchArgument
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -28,7 +28,7 @@ from ament_index_python.packages import (
     get_package_share_directory,
     get_packages_with_prefixes,
 )
-
+from launch.conditions import IfCondition
 
 PACKAGE_NAME = "webots_spot"
 
@@ -42,6 +42,15 @@ def generate_launch_description():
 
     def load_yaml(filename):
         return yaml.safe_load(load_file(filename))
+
+    # Add a launch argument for RViz
+    launch_description_nodes.append(
+        DeclareLaunchArgument(
+            "use_rviz",
+            default_value="true",
+            description="Flag to enable or disable RViz",
+        )
+    )
 
     # Check if moveit is installed
     if "moveit" in get_packages_with_prefixes():
@@ -69,7 +78,7 @@ def generate_launch_description():
             package_dir, "resource", "moveit_visualization.rviz"
         )
 
-        use_rviz = LaunchConfiguration("rviz", default=True)
+        use_rviz = LaunchConfiguration("use_rviz")
         launch_description_nodes.append(
             Node(
                 package="rviz2",
@@ -84,7 +93,7 @@ def generate_launch_description():
                     sim_time,
                     planning_scene,
                 ],
-                condition=launch.conditions.IfCondition(use_rviz),
+                condition=IfCondition(use_rviz),
             )
         )
 
