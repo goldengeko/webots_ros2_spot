@@ -24,9 +24,9 @@ Follow these steps
     source install/setup.bash
     ```
 
-3. Add Kortex description and robotiq description 
+3. Add Kortex description and robotiq description and gripper controller
     ```
-    sudo apt install ros-humble-kortex-description ros-humble-robotiq-description
+    sudo apt install ros-humble-kortex-description ros-humble-robotiq-description ros-humble-gripper-controllers
     ```
 
 4. Add missing Meshes
