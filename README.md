@@ -2,58 +2,36 @@
 
 [![ROS2 Humble](https://github.com/MASKOR/webots_ros2_spot/actions/workflows/test_ros2_humble.yml/badge.svg?branch=main)](https://github.com/MASKOR/webots_ros2_spot/actions/workflows/test_ros2_humble.yml)
 
-This is a ROS 2 package to simulate the Boston Dynamics spot in [webots](https://cyberbotics.com/). Spot is able to walk around, to sit, standup and lie down. We also attached some sensors on spot, like a kinect and a 3D laser.
+This is a ROS 2 package to simulate the Boston Dynamics spot in [webots](https://cyberbotics.com/) with Kinova Gen3 manipulator. Spot is able to walk around, to sit, standup and lie down. We also attached some sensors on spot, like a kinect and a 3D laser.
+
 The world contains apriltags, a red line to test lane follower and objects for manipulation tasks.
 
-![Spot](spot.png)
+## At this point you might have switched to this branch
 
-## Prerequisites
+Follow these steps
 
-    - Ubuntu 22.04
-    - ROS2 Humble https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html
-    - Webots 2025a https://github.com/cyberbotics/webots/releases/tag/R2025a
-
-## Install
-
-1. Install ROS2 Development tools and initialise and update rosdep:
+1. Switch to 2023 controller 
     ```
-    sudo apt install -y ros-dev-tools
-    ```
-    ```
-    source /opt/ros/humble/setup.bash
-    sudo rosdep init
-    rosdep update
-    ```
-
-2. Create a new ROS2 workspace:
-    ```
-    export COLCON_WS=~/ros2_ws
-    mkdir -p $COLCON_WS/src
-    ```
-
-3. Pull relevant packages, install dependencies, compile, and source the workspace by using:
-    ```
-    cd $COLCON_WS
-    git clone https://github.com/MASKOR/webots_ros2_spot src/webots_ros2_spot
-    rosdep install --ignore-src --from-paths src -y -r
-    vcs import --recursive src --skip-existing --input src/webots_ros2_spot/webots_ros2_spot.repos
+    cd src/webots_ros2
+    git checkout 2023.1.2
+    cd back/to/ros2_ws
     chmod +x src/webots_ros2/webots_ros2_driver/webots_ros2_driver/ros2_supervisor.py
     ```
 
-4. Build packages and source the workspace
+2. Build packages and source the workspace
     ```
     colcon build --symlink-install
     source install/setup.bash
     ```
 
-5. Add Kortex description and robotiq description 
+3. Add Kortex description and robotiq description 
     ```
     sudo apt install ros-humble-kortex-description ros-humble-robotiq-description
     ```
 
-## Troubleshoot ERROR with mesh/stl
+4. Add missing Meshes
 
-copy the 2f_140 folder in "opt/ros/humble/share/robotiq_description/meshes/visual" and "opt/ros/humble/share/robotiq_description/meshes/collision"
+    copy the 2f_140 folder in "opt/ros/humble/share/robotiq_description/meshes/visual" and "opt/ros/humble/share/robotiq_description/meshes/collision"
 
 ## Start
 Starting the simulation:
