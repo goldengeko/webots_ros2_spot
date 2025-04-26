@@ -1,11 +1,21 @@
 <?xml version="1.0"?>
 <robot name="Spot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <material name="yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
   <link name="base_link">
     <visual>
       <origin xyz="0.462094 0 -0.000232" rpy="1.127615 -0.00001 -1.570793"/>
       <geometry>
         <box size="0.192453 0.177358 0.043396"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="0.462094 0 -0.000232" rpy="1.127615 -0.00001 -1.570793"/>
@@ -200,6 +210,9 @@
       <geometry>
         <cylinder radius="0.052" length="0.0727"/>
       </geometry>
+      <material name="dark_grey">
+        <color rgba="0.2 0.2 0.2 1"/>
+      </material>
     </visual>
     <collision>
       <origin xyz="0 -0.00165 0" rpy="0 0 0"/>
@@ -220,537 +233,6 @@
     <child link="solid"/>
     <origin xyz="0.496831 0.000001 0.104801" rpy="1.2208 -0.00001 -1.570793"/>
   </joint>
-  <link name="kinect range">
-  </link>
-  <joint name="solid_kinect range_joint" type="fixed">
-    <parent link="solid"/>
-    <child link="kinect range"/>
-    <origin xyz="0 0 -0.0127" rpy="-0.785397 1.570792 0.785397"/>
-  </joint>
-  <link name="kinect color">
-  </link>
-  <joint name="solid_kinect color_joint" type="fixed">
-    <parent link="solid"/>
-    <child link="kinect color"/>
-    <origin xyz="0 0 -0.0127" rpy="-2.356193 1.570792 -0.7854"/>
-  </joint>
-  <link name="SpotArm">
-    <visual>
-      <origin xyz="0 0 0.021" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="0.075" length="0.035"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 0 0.021" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="0.075" length="0.035"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="base_link_SpotArm_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="SpotArm"/>
-    <origin xyz="0.35 0 0.1118" rpy="-0.000017 -0.000003 0.000005"/>
-  </joint>
-  <joint name="spotarm_1_joint" type="revolute">
-    <parent link="SpotArm"/>
-    <child link="spotarm_link1"/>
-    <axis xyz="0 0 1"/>
-    <limit effort="500" lower="-2.61799" upper="3.14159" velocity="2.5"/>
-    <origin xyz="0 0 0.04" rpy="0 0 0"/>
-  </joint>
-  <link name="spotarm_link1">
-    <visual>
-      <origin xyz="0 -0.035 0.076" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <box size="0.14 0.01 0.08"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 -0.035 0.076" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <box size="0.14 0.01 0.08"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0 0.035 0.076" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <box size="0.14 0.01 0.08"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 0.035 0.076" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <box size="0.14 0.01 0.08"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0 -0.0555 0.1" rpy="1.5708 0 0"/>
-      <geometry>
-        <cylinder radius="0.032" length="0.031"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 -0.0555 0.1" rpy="1.5708 0 0"/>
-      <geometry>
-        <cylinder radius="0.032" length="0.031"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0 0.0555 0.1" rpy="1.5708 0 0"/>
-      <geometry>
-        <cylinder radius="0.032" length="0.031"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 0.0555 0.1" rpy="1.5708 0 0"/>
-      <geometry>
-        <cylinder radius="0.032" length="0.031"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="spotarm_2_joint" type="revolute">
-    <parent link="spotarm_link1"/>
-    <child link="spotarm_link2"/>
-    <axis xyz="0 -1 0"/>
-    <limit effort="500" lower="-0.523599" upper="3.14159" velocity="2.5"/>
-    <origin xyz="0 0.03 0.1" rpy="0 0 0"/>
-  </joint>
-  <link name="spotarm_link2">
-    <visual>
-      <origin xyz="0.017 -0.03 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <box size="0.06 0.059 0.093"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.017 -0.03 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <box size="0.06 0.059 0.093"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0.185 -0.03 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <cylinder radius="0.0456" length="0.24"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.185 -0.03 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <cylinder radius="0.0456" length="0.24"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="spotarm_3_joint" type="revolute">
-    <parent link="spotarm_link2"/>
-    <child link="spotarm_link3"/>
-    <axis xyz="0 1 0"/>
-    <limit effort="500" lower="0" upper="3.0" velocity="2.5"/>
-    <origin xyz="0.3385 -0.02 0.000137" rpy="0 0 0"/>
-  </joint>
-  <link name="spotarm_link3">
-    <visual>
-      <origin xyz="0.044 -0.01 0.0514" rpy="3.141593 0.851593 3.141593"/>
-      <geometry>
-        <box size="0.16 0.041 0.04"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.044 -0.01 0.0514" rpy="3.141593 0.851593 3.141593"/>
-      <geometry>
-        <box size="0.16 0.041 0.04"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0.1065 -0.01 0.0973" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <cylinder radius="0.0477" length="0.059"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.1065 -0.01 0.0973" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <cylinder radius="0.0477" length="0.059"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="spotarm_4_joint" type="revolute">
-    <parent link="spotarm_link3"/>
-    <child link="spotarm_link4"/>
-    <axis xyz="1 0 0"/>
-    <limit effort="500" lower="-4.3633" upper="1.22173" velocity="2.5"/>
-    <origin xyz="0.107 -0.01 0.09734" rpy="0 0 0"/>
-  </joint>
-  <link name="spotarm_link4">
-  </link>
-  <joint name="Slider11" type="prismatic">
-    <parent link="spotarm_link4"/>
-    <child link="spotarm_link5"/>
-    <axis xyz="1 0 0"/>
-    <origin xyz="0.035 0 0" rpy="0 0 0"/>
-    <limit effort="100" lower="0" upper="0.075" velocity="100"/>
-  </joint>
-  <link name="spotarm_link5">
-    <visual>
-      <origin xyz="0.232 0 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <box size="0.04 0.044 0.042"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.232 0 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <box size="0.04 0.044 0.042"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0.106 0 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <cylinder radius="0.0477" length="0.21"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.106 0 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <cylinder radius="0.0477" length="0.21"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="spotarm_5_joint" type="revolute">
-    <parent link="spotarm_link5"/>
-    <child link="spotarm_link6"/>
-    <axis xyz="0 1 0"/>
-    <limit effort="500" lower="-1.0472" upper="1.0472" velocity="2.5"/>
-    <origin xyz="0.2413 0.01 0" rpy="0 0 0"/>
-  </joint>
-  <link name="spotarm_link6">
-    <visual>
-      <origin xyz="0.0671 -0.0105 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <cylinder radius="0.0477" length="0.065"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.0671 -0.0105 0" rpy="3.141593 1.570793 3.141593"/>
-      <geometry>
-        <cylinder radius="0.0477" length="0.065"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="spotarm_6_joint" type="revolute">
-    <parent link="spotarm_link6"/>
-    <child link="front"/>
-    <axis xyz="0.000004 0 1"/>
-    <limit effort="500" lower="-4.45059" upper="1.30899" velocity="2.5"/>
-    <origin xyz="0.1 -0.0105 0" rpy="3.141593 -1.570793 3.141593"/>
-  </joint>
-  <link name="front">
-    <visual>
-      <origin xyz="0 0.0005 -0.007" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="0.0227" length="0.028"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 0.0005 -0.007" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="0.0227" length="0.028"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0.029 -0.01784 -0.053" rpy="0 0 0.59"/>
-      <geometry>
-        <box size="0.04 0.0217 0.105"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.029 -0.01784 -0.053" rpy="0 0 0.59"/>
-      <geometry>
-        <box size="0.04 0.0217 0.105"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="-0.029 0.01884 -0.053" rpy="0 0 0.59"/>
-      <geometry>
-        <box size="0.04 0.0217 0.105"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="-0.029 0.01884 -0.053" rpy="0 0 0.59"/>
-      <geometry>
-        <box size="0.04 0.0217 0.105"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0.0172 0.0114 -0.053" rpy="3.141593 -1.570793 3.141593"/>
-      <geometry>
-        <box size="0.106 0.056 0.071"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.0172 0.0114 -0.053" rpy="3.141593 -1.570793 3.141593"/>
-      <geometry>
-        <box size="0.106 0.056 0.071"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="-0.0172 -0.0104 -0.053" rpy="3.141593 -1.570793 3.141593"/>
-      <geometry>
-        <box size="0.106 0.056 0.071"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="-0.0172 -0.0104 -0.053" rpy="3.141593 -1.570793 3.141593"/>
-      <geometry>
-        <box size="0.106 0.056 0.071"/>
-      </geometry>
-    </collision>
-  </link>
-  <link name="gripper_centre">
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <sphere radius="0.01"/>
-      </geometry>
-    </visual>
-  </link>
-  <joint name="gripper_centre_joint" type="fixed">
-    <parent link="front"/>
-    <child link="gripper_centre"/>
-    <origin xyz="0 0 -0.18" rpy="0 0 0"/>
-  </joint>
-  <joint name="gripper_right_finger_joint" type="prismatic">
-    <parent link="front"/>
-    <child link="gripper_right_finger_link"/>
-    <axis xyz="1 0 0"/>
-    <origin xyz="0 0.0005 -0.007" rpy="0 0 0"/>
-    <limit effort="16" lower="0" upper="0.045" velocity="0.05"/>
-  </joint>
-  <link name="gripper_right_finger_link">
-    <visual>
-      <origin xyz="0.004 0 -0.1741" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.0076 0.05091 0.08982"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.004 0 -0.1741" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.0076 0.05091 0.08982"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0.0049 0.0153 -0.1208" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.0055 0.0295 0.018"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.0049 0.0153 -0.1208" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.0055 0.0295 0.018"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="-0.0085 0.0156 -0.1048" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.03213 0.02959 0.01487"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="-0.0085 0.0156 -0.1048" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.03213 0.02959 0.01487"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="gripper_left_finger_joint" type="prismatic">
-    <parent link="front"/>
-    <child link="gripper_left_finger_link"/>
-    <axis xyz="1 0.000093 0"/>
-    <origin xyz="0 0 0" rpy="0 0 3.1415"/>
-    <limit effort="16" lower="0" upper="0.045" velocity="0.05"/>
-  </joint>
-  <link name="gripper_left_finger_link">
-    <visual>
-      <origin xyz="0.004 0 -0.1741" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.0076 0.05091 0.08982"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.004 0 -0.1741" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.0076 0.05091 0.08982"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="0.0049 0.0153 -0.1208" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.0055 0.0295 0.018"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0.0049 0.0153 -0.1208" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.0055 0.0295 0.018"/>
-      </geometry>
-    </collision>
-    <visual>
-      <origin xyz="-0.0085 0.0156 -0.1048" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.03213 0.02959 0.01487"/>
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="-0.0085 0.0156 -0.1048" rpy="0 0 0"/>
-      <geometry>
-        <box size="0.03213 0.02959 0.01487"/>
-      </geometry>
-    </collision>
-  </link>
-  <link name="cap screw(19)">
-  </link>
-  <joint name="front_cap screw(19)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(19)"/>
-    <origin xyz="0.0415 -0.0029 -0.0004" rpy="3.14159 0 0"/>
-  </joint>
-  <link name="cap screw(18)">
-  </link>
-  <joint name="front_cap screw(18)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(18)"/>
-    <origin xyz="-0.0415 0.0029 -0.0004" rpy="3.14159 0 0"/>
-  </joint>
-  <link name="cap screw(17)">
-  </link>
-  <joint name="front_cap screw(17)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(17)"/>
-    <origin xyz="0.0433 0.0315 0.0026" rpy="3.14159 0 0"/>
-  </joint>
-  <link name="cap screw(16)">
-  </link>
-  <joint name="front_cap screw(16)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(16)"/>
-    <origin xyz="-0.0433 -0.0315 0.0026" rpy="3.14159 0 0"/>
-  </joint>
-  <link name="cap screw(15)">
-  </link>
-  <joint name="front_cap screw(15)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(15)"/>
-    <origin xyz="0 0.033 0.0026" rpy="3.14159 0 0"/>
-  </joint>
-  <link name="cap screw(14)">
-  </link>
-  <joint name="front_cap screw(14)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(14)"/>
-    <origin xyz="0 -0.033 0.0026" rpy="3.14159 0 0"/>
-  </joint>
-  <link name="cap screw(13)">
-  </link>
-  <joint name="front_cap screw(13)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(13)"/>
-    <origin xyz="0.0426 -0.0094 -0.09448" rpy="0 0 0"/>
-  </joint>
-  <link name="cap screw(12)">
-  </link>
-  <joint name="front_cap screw(12)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(12)"/>
-    <origin xyz="-0.0425 0.0094 -0.0945" rpy="0 0 0"/>
-  </joint>
-  <link name="cap screw(11)">
-  </link>
-  <joint name="front_cap screw(11)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(11)"/>
-    <origin xyz="-0.0477 -0.008 -0.0108" rpy="3.141593 1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(10)">
-  </link>
-  <joint name="front_cap screw(10)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(10)"/>
-    <origin xyz="-0.0477 -0.008 -0.043" rpy="3.141593 1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(9)">
-  </link>
-  <joint name="front_cap screw(9)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(9)"/>
-    <origin xyz="-0.0477 -0.008 -0.075" rpy="3.141593 1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(8)">
-  </link>
-  <joint name="front_cap screw(8)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(8)"/>
-    <origin xyz="-0.0477 0.008 -0.075" rpy="3.141593 1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(7)">
-  </link>
-  <joint name="front_cap screw(7)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(7)"/>
-    <origin xyz="-0.0477 0.008 -0.043" rpy="3.141593 1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(6)">
-  </link>
-  <joint name="front_cap screw(6)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(6)"/>
-    <origin xyz="-0.0477 0.008 -0.0108" rpy="3.141593 1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(5)">
-  </link>
-  <joint name="front_cap screw(5)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(5)"/>
-    <origin xyz="0.0477 -0.008 -0.0108" rpy="3.141593 -1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(4)">
-  </link>
-  <joint name="front_cap screw(4)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(4)"/>
-    <origin xyz="0.0477 -0.008 -0.043" rpy="3.141593 -1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(3)">
-  </link>
-  <joint name="front_cap screw(3)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(3)"/>
-    <origin xyz="0.0477 -0.008 -0.075" rpy="3.141593 -1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(2)">
-  </link>
-  <joint name="front_cap screw(2)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(2)"/>
-    <origin xyz="0.0477 0.008 -0.075" rpy="3.141593 -1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw(1)">
-  </link>
-  <joint name="front_cap screw(1)_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw(1)"/>
-    <origin xyz="0.0477 0.008 -0.043" rpy="3.141593 -1.570793 3.141593"/>
-  </joint>
-  <link name="cap screw">
-  </link>
-  <joint name="front_cap screw_joint" type="fixed">
-    <parent link="front"/>
-    <child link="cap screw"/>
-    <origin xyz="0.0477 0.008 -0.0108" rpy="3.141593 -1.570793 3.141593"/>
-  </joint>
   <joint name="rear right shoulder abduction motor" type="revolute">
     <parent link="base_link"/>
     <child link="rear right shoulder"/>
@@ -764,6 +246,7 @@
       <geometry>
         <box size="0.086792 0.124528 0.120755"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="-0.004874 0.000873 -0.000643" rpy="0 0 0"/>
@@ -809,6 +292,7 @@
       <geometry>
         <cylinder radius="0.02717" length="0.060377"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="0.117011 -0.32073 0.1829" rpy="-1.5708 0 1.5708"/>
@@ -1010,6 +494,7 @@
       <geometry>
         <cylinder radius="0.035094" length="0.039623"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0.001038 -0.271321 -0.225038" rpy="-1.5708 0 1.570801"/>
@@ -1239,6 +724,7 @@
       <geometry>
         <box size="0.086792 0.124528 0.120755"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0.004874 0.000873 -0.000643" rpy="0 0 0"/>
@@ -1284,6 +770,7 @@
       <geometry>
         <cylinder radius="0.02717" length="0.060377"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="-0.117011 -0.32073 0.1829" rpy="-1.5708 0 1.5708"/>
@@ -1485,6 +972,7 @@
       <geometry>
         <cylinder radius="0.035094" length="0.039623"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="-0.001038 -0.271321 -0.225038" rpy="-1.5708 0 1.570801"/>
@@ -1714,6 +1202,7 @@
       <geometry>
         <box size="0.086792 0.124528 0.120755"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="-0.004874 0.000873 -0.000643" rpy="0 0 0"/>
@@ -1759,6 +1248,7 @@
       <geometry>
         <cylinder radius="0.02717" length="0.060377"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="0.117011 -0.32073 0.1829" rpy="-1.5708 0 1.5708"/>
@@ -1960,6 +1450,7 @@
       <geometry>
         <cylinder radius="0.035094" length="0.039623"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0.001038 -0.271321 -0.225038" rpy="-1.5708 0 1.570801"/>
@@ -2189,6 +1680,7 @@
       <geometry>
         <box size="0.086792 0.124528 0.120755"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0.004874 0.000873 -0.000643" rpy="0 0 0"/>
@@ -2234,6 +1726,7 @@
       <geometry>
         <cylinder radius="0.02717" length="0.060377"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="-0.117011 -0.32073 0.1829" rpy="-1.5708 0 1.5708"/>
@@ -2435,6 +1928,7 @@
       <geometry>
         <cylinder radius="0.035094" length="0.039623"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="-0.001038 -0.271321 -0.225038" rpy="-1.5708 0 1.570801"/>

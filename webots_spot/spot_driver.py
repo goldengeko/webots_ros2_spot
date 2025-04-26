@@ -8,6 +8,7 @@ from geometry_msgs.msg import Twist, TransformStamped
 from sensor_msgs.msg import JointState
 from nav_msgs.msg import Odometry
 from tf2_ros.transform_broadcaster import TransformBroadcaster
+from std_srvs.srv import Empty
 
 import numpy as np
 import copy
@@ -15,7 +16,7 @@ import copy
 from webots_spot.SpotKinematics import SpotModel
 from webots_spot.Bezier import BezierGait
 
-from webots_spot.arena_modifier import ArenaModifier
+#from webots_spot.arena_modifier import ArenaModifier
 
 NUMBER_OF_JOINTS = 12
 HEIGHT = 0.52  # From spot kinematics
@@ -210,6 +211,9 @@ class SpotDriver:
         self.__node.create_service(
             SpotMotion, "/Spot/blocksworld_pose", self.blocksworld_pose
         )
+        self.__node.create_service(
+            Empty, '/Spot/reset_position', self.reset_position_callback
+        )
 
         ## Webots Touch Sensors
         self.touch_fl = self.__robot.getDevice("front left touch sensor")
@@ -293,7 +297,7 @@ class SpotDriver:
         self.previous_cmd = False
 
         # Initialise arena modifier
-        ArenaModifier(self.__node, self.__robot)
+        #ArenaModifier(self.__node, self.__robot)
 
     def __model_cb(self):
         spot_rot = self.spot_node.getField("rotation")
@@ -449,18 +453,18 @@ class SpotDriver:
 
         if not self.arena2 or not self.arena3:
             transforms_to_publish = [
-                "Spot",
-                "A",
-                "B",
-                "C",
-                "T1",
-                "T2",
-                "T3",
-                "P",
-                "Image1",
-                "Image2",
-                "Image3",
-                "PlaceBox",
+                 "Spot",
+                # "A",
+                # "B",
+                # "C",
+                # "T1",
+                # "T2",
+                # "T3",
+                # "P",
+                # "Image1",
+                # "Image2",
+                # "Image3",
+                # "PlaceBox",
             ]
         else:
             transforms_to_publish = ["Spot"]
@@ -731,6 +735,12 @@ class SpotDriver:
             response.answer = "set height within -0.2 and 0.2"
             return response
         self.zd = -request.height
+        return response
+
+    def reset_position_callback(self, request, response):
+        self.spot_translation.setSFVec3f(self.spot_translation_initial)
+        self.spot_rotation.setSFRotation(self.spot_rotation_initial)
+        self.__node.get_logger().info("Spot position and orientation have been reset.")
         return response
 
     def step(self):
