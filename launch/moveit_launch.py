@@ -98,7 +98,7 @@ def generate_launch_description():
         )
 
         # MoveIt2 node
-        movegroup = {"move_group": load_yaml("ompl_planning.yaml")}
+        movegroup = {"move_group": load_yaml("moveit_movegroup.yaml")}
         moveit_controllers = {
             "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
             "moveit_simple_controller_manager": load_yaml("moveit_controllers.yaml"),
