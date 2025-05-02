@@ -47,7 +47,7 @@ class CircleDetectorTF(Node):
         # Get the camera's orientation from the TF tree
         try:
             camera_transform = self.tf_buffer.lookup_transform(
-                "camera_link",  # Replace with the fixed frame (e.g., "world" or "map")
+                "camera_link",
                 self.camera_frame,
                 rclpy.time.Time(),
             )

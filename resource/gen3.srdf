@@ -55,10 +55,10 @@
     </group_state>
     <group_state name="front_inspection" group="manipulator">
         <joint name="joint_1" value="0"/>
-        <joint name="joint_2" value="1.3985"/>
-        <joint name="joint_3" value="-1.7856"/>
+        <joint name="joint_2" value="0.61"/>
+        <joint name="joint_3" value="-2.3"/>
         <joint name="joint_4" value="0"/>
-        <joint name="joint_5" value="1.57"/>
+        <joint name="joint_5" value="1.3"/>
         <joint name="joint_6" value="1.57"/>
     </group_state>
     <group_state name="open" group="gripper">

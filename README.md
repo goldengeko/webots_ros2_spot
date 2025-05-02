@@ -31,7 +31,9 @@ Follow these steps
 
 4. Add missing Meshes
 
-    copy the 2f_140 folder in "opt/ros/humble/share/robotiq_description/meshes/visual" and "opt/ros/humble/share/robotiq_description/meshes/collision"
+    Copy the 2f_140 folder in ```opt/ros/humble/share/robotiq_description/meshes/visual``` and ```opt/ros/humble/share/robotiq_description/meshes/collision```
+
+5. If the IK solver is missing, install from [here](https://github.com/PickNikRobotics/pick_ik)
 
 ## Start
 Starting the simulation:
@@ -39,24 +41,23 @@ Starting the simulation:
 ros2 launch webots_spot spot_launch.py
 ```
 
-Send joint positions
-```
-ros2 topic pub --once /kinova_joint_trajectory_controller/joint_trajectory trajectory_msgs/JointTrajectory "{
-  header: { stamp: { sec: 0, nanosec: 0 }, frame_id: '' },
-  joint_names: ['joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5', 'joint_6'],
-  points: [
-    {
-      positions: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-      velocities: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-      accelerations: [],
-      effort: [],
-      time_from_start: { sec: 3, nanosec: 0 }
-    }
-  ]
-}"
-```
 
-Motion Planning with MoveIt
+Motion Planning with MoveIt (please source install [moveit2](https://moveit.picknik.ai/humble/doc/tutorials/getting_started/getting_started.html#create-a-colcon-workspace-and-download-tutorials))
 ```
 ros2 launch webots_spot moveit_launch.py 
+```
+
+Realtime servoing (previous commands need to be launched and running; all commands in seperate tabs (duh!) )
+```
+ros2 launch webots_spot servo_launch.py
+
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 odom base_link
+
+ros2 service call /servo_node/start_servo std_srvs/srv/Trigger {}
+```
+Note: The commands can be published on topics ```sevo_node/delta_twist_cmds``` and ```sevo_node/delta_joint_cmds```. Play around with the `moveit_servo_config.yaml` if servo launch throws errors
+
+For servoing using keyboard(teleop) (acting a bit weird, but works)
+```
+ros2 run webots_spot teleop_servo 
 ```
