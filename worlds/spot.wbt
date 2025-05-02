@@ -52,6 +52,27 @@ Solid {
           translation 0 0.025 0.044888
           rotation 1 0 0 1.5708
           children [
+            Solid {
+              translation 0 0.02 -1.93726e-07
+              rotation 1 0 0 -1.5707953071795862
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "landolt.png"
+                      ]
+                    }
+                    roughness 1
+                    metalness 0
+                    emissiveIntensity 0
+                  }
+                  geometry Plane {
+                    size 0.05 0.05
+                  }
+                }
+              ]
+            }
             Shape {
               appearance PBRAppearance {
                 roughness 1
@@ -70,6 +91,27 @@ Solid {
           translation -0.12634 0.025 0.0412278
           rotation 0.9351132545462786 -0.25056306820553154 0.25056206820525934 1.63784
           children [
+            Solid {
+              translation 0 0.02 -1.93726e-07
+              rotation 1 0 0 -1.5707953071795862
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "landolt.png"
+                      ]
+                    }
+                    roughness 1
+                    metalness 0
+                    emissiveIntensity 0
+                  }
+                  geometry Plane {
+                    size 0.05 0.05
+                  }
+                }
+              ]
+            }
             Shape {
               appearance PBRAppearance {
                 roughness 1
@@ -88,6 +130,27 @@ Solid {
           translation 0.13 0.025 0.0375674
           rotation -0.9351132545462786 -0.25056306820553154 0.25056206820525934 -1.6378353071795866
           children [
+            Solid {
+              translation 0 0.02 -1.93726e-07
+              rotation 1 0 0 -1.5707953071795862
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "landolt.png"
+                      ]
+                    }
+                    roughness 1
+                    metalness 0
+                    emissiveIntensity 0
+                  }
+                  geometry Plane {
+                    size 0.05 0.05
+                  }
+                }
+              ]
+            }
             Shape {
               appearance PBRAppearance {
                 roughness 1
@@ -106,6 +169,27 @@ Solid {
           translation -0.3 0.025 0.024888
           rotation 1 0 0 1.5708
           children [
+            Solid {
+              translation 0 0.02 -1.93726e-07
+              rotation 1 0 0 -1.5707953071795862
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "landolt.png"
+                      ]
+                    }
+                    roughness 1
+                    metalness 0
+                    emissiveIntensity 0
+                  }
+                  geometry Plane {
+                    size 0.05 0.05
+                  }
+                }
+              ]
+            }
             Shape {
               appearance PBRAppearance {
                 roughness 1
@@ -124,6 +208,27 @@ Solid {
           translation 0.29 0.025 0.024888
           rotation 1 0 0 1.5708
           children [
+            Solid {
+              translation 0 0.02 -1.93726e-07
+              rotation 1 0 0 -1.5707953071795862
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColorMap ImageTexture {
+                      url [
+                        "landolt.png"
+                      ]
+                    }
+                    roughness 1
+                    metalness 0
+                    emissiveIntensity 0
+                  }
+                  geometry Plane {
+                    size 0.05 0.05
+                  }
+                }
+              ]
+            }
             Shape {
               appearance PBRAppearance {
                 roughness 1
@@ -944,6 +1049,27 @@ Solid {
       translation 0.17 0.0400012 0.04
       rotation 1 0 0 1.5708
       children [
+        Solid {
+          translation 0 0.02 -1.93726e-07
+          rotation 1 0 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColorMap ImageTexture {
+                  url [
+                    "landolt.png"
+                  ]
+                }
+                roughness 1
+                metalness 0
+                emissiveIntensity 0
+              }
+              geometry Plane {
+                size 0.05 0.05
+              }
+            }
+          ]
+        }
         Shape {
           appearance PBRAppearance {
             roughness 1
@@ -962,6 +1088,27 @@ Solid {
       translation 0.268787 0.0400012 0.0187867
       rotation -0.8628565621288802 -0.35740681862788 0.3574058186283875 -1.7177753071795863
       children [
+        Solid {
+          translation 0 0.02 -1.93726e-07
+          rotation 1 0 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColorMap ImageTexture {
+                  url [
+                    "landolt.png"
+                  ]
+                }
+                roughness 1
+                metalness 0
+                emissiveIntensity 0
+              }
+              geometry Plane {
+                size 0.05 0.05
+              }
+            }
+          ]
+        }
         Shape {
           appearance PBRAppearance {
             roughness 1
@@ -980,6 +1127,27 @@ Solid {
       translation 0.16 0.155001 0.0140191
       rotation -1 0 0 -1.0472053071795866
       children [
+        Solid {
+          translation 0 0.02 -1.93726e-07
+          rotation 1 0 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColorMap ImageTexture {
+                  url [
+                    "landolt.png"
+                  ]
+                }
+                roughness 1
+                metalness 0
+                emissiveIntensity 0
+              }
+              geometry Plane {
+                size 0.05 0.05
+              }
+            }
+          ]
+        }
         Shape {
           appearance PBRAppearance {
             roughness 1
@@ -998,6 +1166,27 @@ Solid {
       translation 0.16 -0.0799988 0.04
       rotation 1 0 0 2.0944
       children [
+        Solid {
+          translation 0 0.02 -1.93726e-07
+          rotation 1 0 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColorMap ImageTexture {
+                  url [
+                    "landolt.png"
+                  ]
+                }
+                roughness 1
+                metalness 0
+                emissiveIntensity 0
+              }
+              geometry Plane {
+                size 0.05 0.05
+              }
+            }
+          ]
+        }
         Shape {
           appearance PBRAppearance {
             roughness 1
@@ -1016,6 +1205,27 @@ Solid {
       translation 0.0470711 0.0400012 0.0187867
       rotation 0.8628565621288802 -0.35740681862788 0.3574058186283875 1.71777
       children [
+        Solid {
+          translation 0 0.02 -1.93726e-07
+          rotation 1 0 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColorMap ImageTexture {
+                  url [
+                    "landolt.png"
+                  ]
+                }
+                roughness 1
+                metalness 0
+                emissiveIntensity 0
+              }
+              geometry Plane {
+                size 0.05 0.05
+              }
+            }
+          ]
+        }
         Shape {
           appearance PBRAppearance {
             roughness 1
