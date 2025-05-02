@@ -20,7 +20,7 @@ import os
 import pathlib
 import yaml
 import launch
-from launch.actions import LogInfo
+from launch.actions import LogInfo, DeclareLaunchArgument
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -28,7 +28,7 @@ from ament_index_python.packages import (
     get_package_share_directory,
     get_packages_with_prefixes,
 )
-
+from launch.conditions import IfCondition
 
 PACKAGE_NAME = "webots_spot"
 
@@ -43,6 +43,15 @@ def generate_launch_description():
     def load_yaml(filename):
         return yaml.safe_load(load_file(filename))
 
+    # Add a launch argument for RViz
+    launch_description_nodes.append(
+        DeclareLaunchArgument(
+            "use_rviz",
+            default_value="true",
+            description="Flag to enable or disable RViz",
+        )
+    )
+
     # Check if moveit is installed
     if "moveit" in get_packages_with_prefixes():
         # Configuration
@@ -56,13 +65,20 @@ def generate_launch_description():
         }
 
         sim_time = {"use_sim_time": True}
-
+        planning_scene = {
+            "publish_planning_scene": True,
+            "publish_geometry_updates": True,
+            "publish_state_updates": True,
+            "publish_transforms_updates": True,
+            "publish_robot_description": True,
+            "publish_robot_description_semantic": True,
+        }
         # Rviz node
         rviz_config_file = os.path.join(
             package_dir, "resource", "moveit_visualization.rviz"
         )
 
-        use_rviz = LaunchConfiguration("rviz", default=True)
+        use_rviz = LaunchConfiguration("use_rviz")
         launch_description_nodes.append(
             Node(
                 package="rviz2",
@@ -73,9 +89,11 @@ def generate_launch_description():
                     description,
                     description_semantic,
                     description_kinematics,
+                    description_joint_limits,
                     sim_time,
+                    planning_scene,
                 ],
-                condition=launch.conditions.IfCondition(use_rviz),
+                condition=IfCondition(use_rviz),
             )
         )
 
@@ -99,8 +117,24 @@ def generate_launch_description():
                     moveit_controllers,
                     movegroup,
                     sim_time,
+                    planning_scene,
                 ],
             )
+        )
+        Node(
+            package="gen3_moveit",
+            executable="gen3_moveit",
+            output="screen",
+            parameters=[
+                description,
+                description_semantic,
+                description_kinematics,
+                description_joint_limits,
+                moveit_controllers,
+                movegroup,
+                sim_time,
+                planning_scene,
+            ],
         )
 
     else:

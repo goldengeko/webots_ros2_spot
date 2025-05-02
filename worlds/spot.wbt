@@ -20,8 +20,8 @@ WorldInfo {
   basicTimeStep 16
 }
 DEF Viewpoint Viewpoint {
-  orientation 0.20158727100247922 0.38991446460622553 -0.8985150429795894 1.3407535841176146
-  position 6.522489630647364 7.61269821587086 6.330328598535337
+  orientation 0.2728741812168271 -0.020796936749771684 -0.9618249157965665 3.4633950254304224
+  position 16.104792644368516 -5.021405472237846 8.513543733031938
 }
 TexturedBackground {
   texture "factory"
@@ -41,6 +41,120 @@ RectangleArena {
       scale 5 1.75
     }
   }
+}
+Solid {
+  translation 3.65 0.77 0.51
+  children [
+    Solid {
+      rotation 0.5773519358512958 0.5773519358512958 0.5773469358518515 2.0944
+      children [
+        Solid {
+          translation 0 0.025 0.044888
+          rotation 1 0 0 1.5708
+          children [
+            Shape {
+              appearance PBRAppearance {
+                roughness 1
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "50mm_pipe v1.stl"
+                ]
+              }
+            }
+          ]
+          name "pipe"
+        }
+        Solid {
+          translation -0.12634 0.025 0.0412278
+          rotation 0.9351132545462786 -0.25056306820553154 0.25056206820525934 1.63784
+          children [
+            Shape {
+              appearance PBRAppearance {
+                roughness 1
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "50mm_pipe v1.stl"
+                ]
+              }
+            }
+          ]
+          name "pipe(4)"
+        }
+        Solid {
+          translation 0.13 0.025 0.0375674
+          rotation -0.9351132545462786 -0.25056306820553154 0.25056206820525934 -1.6378353071795866
+          children [
+            Shape {
+              appearance PBRAppearance {
+                roughness 1
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "50mm_pipe v1.stl"
+                ]
+              }
+            }
+          ]
+          name "pipe(3)"
+        }
+        Solid {
+          translation -0.3 0.025 0.024888
+          rotation 1 0 0 1.5708
+          children [
+            Shape {
+              appearance PBRAppearance {
+                roughness 1
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "50mm_pipe v1.stl"
+                ]
+              }
+            }
+          ]
+          name "pipe(2)"
+        }
+        Solid {
+          translation 0.29 0.025 0.024888
+          rotation 1 0 0 1.5708
+          children [
+            Shape {
+              appearance PBRAppearance {
+                roughness 1
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "50mm_pipe v1.stl"
+                ]
+              }
+            }
+          ]
+          name "pipe(1)"
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.14902 0.635294 0.411765
+            roughness 1
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "linear_board.stl"
+            ]
+            name "board"
+          }
+        }
+      ]
+    }
+  ]
+  name "linear board"
 }
 Pedestrian {
   translation -7.2 -1.2 1.28
@@ -369,8 +483,9 @@ DEF Spot Spot {
           translation 0.03 2.20392e-07 0.06
           rotation 0 0 1 1.5708
           name "kinova_depth"
-          width 480
-          height 270
+          width 640
+          height 480
+          minRange 0.001
           maxRange 10
         }
         Camera {

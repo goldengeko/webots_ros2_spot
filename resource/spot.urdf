@@ -1,11 +1,21 @@
 <?xml version="1.0"?>
 <robot name="Spot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <material name="yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
   <link name="base_link">
     <visual>
       <origin xyz="0.462094 0 -0.000232" rpy="1.127615 -0.00001 -1.570793"/>
       <geometry>
         <box size="0.192453 0.177358 0.043396"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="0.462094 0 -0.000232" rpy="1.127615 -0.00001 -1.570793"/>
@@ -1111,6 +1121,7 @@
       <geometry>
         <box size="0.086792 0.124528 0.120755"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="-0.004874 0.000873 -0.000643" rpy="0 0 0"/>
@@ -1156,6 +1167,7 @@
       <geometry>
         <cylinder radius="0.02717" length="0.060377"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="0.117011 -0.32073 0.1829" rpy="-1.5708 0 1.5708"/>
@@ -1357,6 +1369,7 @@
       <geometry>
         <cylinder radius="0.035094" length="0.039623"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0.001038 -0.271321 -0.225038" rpy="-1.5708 0 1.570801"/>
@@ -1586,6 +1599,7 @@
       <geometry>
         <box size="0.086792 0.124528 0.120755"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0.004874 0.000873 -0.000643" rpy="0 0 0"/>
@@ -1631,6 +1645,7 @@
       <geometry>
         <cylinder radius="0.02717" length="0.060377"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="-0.117011 -0.32073 0.1829" rpy="-1.5708 0 1.5708"/>
@@ -1832,6 +1847,7 @@
       <geometry>
         <cylinder radius="0.035094" length="0.039623"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="-0.001038 -0.271321 -0.225038" rpy="-1.5708 0 1.570801"/>
@@ -2061,6 +2077,7 @@
       <geometry>
         <box size="0.086792 0.124528 0.120755"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="-0.004874 0.000873 -0.000643" rpy="0 0 0"/>
@@ -2106,6 +2123,7 @@
       <geometry>
         <cylinder radius="0.02717" length="0.060377"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="0.117011 -0.32073 0.1829" rpy="-1.5708 0 1.5708"/>
@@ -2307,6 +2325,7 @@
       <geometry>
         <cylinder radius="0.035094" length="0.039623"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0.001038 -0.271321 -0.225038" rpy="-1.5708 0 1.570801"/>
@@ -2536,6 +2555,7 @@
       <geometry>
         <box size="0.086792 0.124528 0.120755"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0.004874 0.000873 -0.000643" rpy="0 0 0"/>
@@ -2581,6 +2601,7 @@
       <geometry>
         <cylinder radius="0.02717" length="0.060377"/>
       </geometry>
+      <material name="yellow"/>
     </visual>
     <collision>
       <origin xyz="-0.117011 -0.32073 0.1829" rpy="-1.5708 0 1.5708"/>
@@ -2782,6 +2803,7 @@
       <geometry>
         <cylinder radius="0.035094" length="0.039623"/>
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="-0.001038 -0.271321 -0.225038" rpy="-1.5708 0 1.570801"/>

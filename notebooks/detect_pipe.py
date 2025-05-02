@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
+from std_msgs.msg import String
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
@@ -11,11 +12,18 @@ class DetectPipe(Node):
     def __init__(self):
         super().__init__("detect_pipe")
         self.color_subscription = self.create_subscription(
-            Image, "Gen3/kinova_color/image_color", self.image_callback, 10
+            Image, "/camera/camera/color/image_raw", self.image_callback, 10
         )
 
         self.depth_subscription = self.create_subscription(
-            Image, "Gen3/kinova_depth/image", self.depth_callback, 10
+            Image,
+            "/camera/camera/aligned_depth_to_color/image_raw",
+            self.depth_callback,
+            10,
+        )
+
+        self.center_publisher = self.create_publisher(
+            String, "/detected_pipe/center", 10
         )
 
         self.bridge = CvBridge()
@@ -30,17 +38,17 @@ class DetectPipe(Node):
         self.color_min_radius = 20
         self.color_max_radius = 50
 
-        # Scaling factors (based on topic echo)
-        self.depth_width = 480
-        self.depth_height = 270
+        # Scaling factors (based on actual resolutions)
+        self.depth_width = 640
+        self.depth_height = 480
         self.color_width = 640
         self.color_height = 480
         self.scale_x = self.depth_width / self.color_width
         self.scale_y = self.depth_height / self.color_height
 
         # Offset(tune these manually)
-        self.offset_x = -32
-        self.offset_y = -25
+        self.offset_x = 0
+        self.offset_y = 0
 
         # CSV file setup
         self.csv_file = "detected_circles.csv"
@@ -75,6 +83,10 @@ class DetectPipe(Node):
         if self.circles is not None:
             self.circles = np.round(self.circles[0, :]).astype("int")
             for x, y, r in self.circles:
+                # Adjust x and y to be relative to the center of the frame
+                x_centered = x - (self.color_width // 2)
+                y_centered = y - (self.color_height // 2)
+
                 # Draw on color image (using original radius)
                 cv2.circle(frame, (x, y), r, (0, 255, 0), 4)
                 cv2.rectangle(frame, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
@@ -114,15 +126,29 @@ class DetectPipe(Node):
                         distance_meters = (
                             avg_depth / 1000.0
                         )  # (assuming depth is in mm)
-                        self.get_logger().info(
-                            f"Circle at ({x}, {y}) [scaled: ({x_scaled}, {y_scaled})], "
-                            f"radius {r} [scaled: {r_scaled}], "
-                            f"avg distance: {distance_meters:.2f} meters"
-                        )
 
-                        with open(self.csv_file, mode="a", newline="") as file:
-                            writer = csv.writer(file)
-                            writer.writerow([x, y, r, distance_meters])
+                        # Only register distances less than 1 meter
+                        if distance_meters < 1.0:
+                            self.get_logger().info(
+                                f"Circle at ({x_centered}, {y_centered}) [scaled: ({x_scaled}, {y_scaled})], "
+                                f"radius {r} [scaled: {r_scaled}], "
+                                f"avg distance: {distance_meters:.2f} meters"
+                            )
+
+                            with open(self.csv_file, mode="a", newline="") as file:
+                                writer = csv.writer(file)
+                                writer.writerow(
+                                    [x_centered, y_centered, r, distance_meters]
+                                )
+
+                            # Publish the center of the detected circle
+                            center_msg = String()
+                            center_msg.data = f"x:{x_centered}, y:{y_centered}, distance:{distance_meters:.2f}"
+                            self.center_publisher.publish(center_msg)
+                        else:
+                            self.get_logger().debug(
+                                f"Circle at ({x_centered}, {y_centered}) with avg distance {distance_meters:.2f} meters ignored (>= 1 meter)"
+                            )
                     else:
                         self.get_logger().warn(
                             f"Scaled circle at ({x_scaled}, {y_scaled}) with radius {r_scaled} "
@@ -130,19 +156,18 @@ class DetectPipe(Node):
                         )
                 else:
                     self.get_logger().info(
-                        f"Circle at ({x}, {y}) with radius {r} (no depth yet)"
+                        f"Circle at ({x_centered}, {y_centered}) with radius {r} (no depth yet)"
                     )
         else:
             self.get_logger().debug("No circles detected in color image")
 
         cv2.imshow("Color - Detected Circles", frame)
-        # cv2.imshow("Color - Grayscale", gray)
         cv2.waitKey(1)
 
     def depth_callback(self, msg):
         self.latest_depth_frame = self.bridge.imgmsg_to_cv2(
             msg, "32FC1"
-        )  # This is where we get the depth
+        )  # Updated encoding
 
         if self.latest_depth_frame is None or self.latest_depth_frame.size == 0:
             self.get_logger().error("Error: depth image is empty")
@@ -153,7 +178,7 @@ class DetectPipe(Node):
 
         # Normalize depth values for display
         depth_display = cv2.convertScaleAbs(
-            self.latest_depth_frame, alpha=255.0 / np.nanmax(self.latest_depth_frame)
+            self.latest_depth_frame, alpha=255.0 / np.max(self.latest_depth_frame)
         )
         depth_display = cv2.cvtColor(depth_display, cv2.COLOR_GRAY2BGR)
 
@@ -200,7 +225,7 @@ class DetectPipe(Node):
                 # Compute average depth in meters
                 avg_depth = np.mean(valid_depths)
                 distance_meters = avg_depth  # Assuming depth is already in meters
-                self.get_logger().info(
+                self.get_logger().debug(
                     f"Circle at ({x}, {y}) [scaled: ({x_scaled}, {y_scaled})], "
                     f"radius {r} [scaled: {r_scaled}], "
                     f"avg distance: {distance_meters:.2f} meters"

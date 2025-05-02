@@ -53,6 +53,7 @@ setup(
             "retract_manipulator = " + package_name + ".retract_manipulator:main",
             "arena_modifier = " + package_name + ".arena_modifier:main",
             "set_ready_position = " + package_name + ".set_ready_position:main",
+            "teleop_servo = " + package_name + ".teleop_servo:main",
         ],
     },
 )

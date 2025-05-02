@@ -144,7 +144,6 @@ def generate_launch_description():
             on_exit=[launch.actions.EmitEvent(event=launch.events.Shutdown())],
         )
     )
-
     pointcloud_to_laserscan_node = Node(
         package="pointcloud_to_laserscan",
         executable="pointcloud_to_laserscan_node",
