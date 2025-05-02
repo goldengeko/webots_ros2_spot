@@ -54,6 +54,7 @@ setup(
             "arena_modifier = " + package_name + ".arena_modifier:main",
             "set_ready_position = " + package_name + ".set_ready_position:main",
             "teleop_servo = " + package_name + ".teleop_servo:main",
+            "dex_sequence = " + package_name + ".dex_sequence:main",
         ],
     },
 )
