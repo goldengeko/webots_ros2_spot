@@ -20,8 +20,8 @@ WorldInfo {
   basicTimeStep 16
 }
 DEF Viewpoint Viewpoint {
-  orientation 0.2728741812168271 -0.020796936749771684 -0.9618249157965665 3.4633950254304224
-  position 16.104792644368516 -5.021405472237846 8.513543733031938
+  orientation -0.22215181989066202 0.15748419217153245 0.9622095915835317 1.7106611458880443
+  position 8.688699333089648 -5.946749947221553 3.5316700535527237
 }
 TexturedBackground {
   texture "factory"
@@ -604,7 +604,6 @@ DEF Spot Spot {
     }
     Kinect {
       translation 0 -0.007 -0.240831
-      rotation 1 0 0 -0.35
       foot FALSE
     }
   ]
@@ -1242,7 +1241,7 @@ Solid {
     }
     Shape {
       appearance PBRAppearance {
-        baseColor 0.803922 0.670588 0.560784
+        baseColor 0.109804 0.443137 0.847059
         roughness 1
         metalness 0
       }

@@ -12,12 +12,12 @@ class DetectPipe(Node):
     def __init__(self):
         super().__init__("detect_pipe")
         self.color_subscription = self.create_subscription(
-            Image, "/camera/camera/color/image_raw", self.image_callback, 10
+            Image, "/Gen3/kinova_color/image_color", self.image_callback, 10
         )
 
         self.depth_subscription = self.create_subscription(
             Image,
-            "/camera/camera/aligned_depth_to_color/image_raw",
+            "/Gen3/kinova_depth/image",
             self.depth_callback,
             10,
         )
@@ -47,7 +47,7 @@ class DetectPipe(Node):
         self.scale_y = self.depth_height / self.color_height
 
         # Offset(tune these manually)
-        self.offset_x = 0
+        self.offset_x = -0.2
         self.offset_y = 0
 
         # CSV file setup
@@ -87,14 +87,20 @@ class DetectPipe(Node):
                 x_centered = x - (self.color_width // 2)
                 y_centered = y - (self.color_height // 2)
 
-                # Draw on color image (using original radius)
-                cv2.circle(frame, (x, y), r, (0, 255, 0), 4)
-                cv2.rectangle(frame, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
-
                 # Scale to depth coordinates
                 x_scaled = int(x * self.scale_x) + self.offset_x
                 y_scaled = int(y * self.scale_y) + self.offset_y
                 r_scaled = int(r * self.scale_x)
+
+                # Use these integer values for drawing
+                cv2.circle(frame, (x_scaled, y_scaled), r_scaled, (0, 255, 0), 4)
+                cv2.rectangle(
+                    frame,
+                    (x_scaled - 5, y_scaled - 5),
+                    (x_scaled + 5, y_scaled + 5),
+                    (0, 128, 255),
+                    -1,
+                )
 
                 # Check depth if available
                 if self.latest_depth_frame is not None:
@@ -103,10 +109,10 @@ class DetectPipe(Node):
                         and 0 <= x_scaled < self.depth_width
                     ):
                         # Extract depth ROI around the circle
-                        y_min = max(0, y_scaled - r_scaled)
-                        y_max = min(self.depth_height, y_scaled + r_scaled)
-                        x_min = max(0, x_scaled - r_scaled)
-                        x_max = min(self.depth_width, x_scaled + r_scaled)
+                        y_min = max(0, int(y_scaled - r_scaled))
+                        y_max = min(self.depth_height, int(y_scaled + r_scaled))
+                        x_min = max(0, int(x_scaled - r_scaled))
+                        x_max = min(self.depth_width, int(x_scaled + r_scaled))
                         depth_roi = self.latest_depth_frame[y_min:y_max, x_min:x_max]
 
                         if depth_roi.size == 0:
@@ -123,9 +129,7 @@ class DetectPipe(Node):
                             continue
 
                         avg_depth = np.mean(valid_depths)
-                        distance_meters = (
-                            avg_depth / 1000.0
-                        )  # (assuming depth is in mm)
+                        distance_meters = avg_depth  # (assuming depth is in mm)
 
                         # Only register distances less than 1 meter
                         if distance_meters < 1.0:
@@ -185,8 +189,8 @@ class DetectPipe(Node):
         # Overlay circles from color image
         if self.circles is not None:
             for x, y, r in self.circles:
-                x_scaled = int(x * self.scale_x) + self.offset_x
-                y_scaled = int(y * self.scale_y) + self.offset_y
+                x_scaled = int(x * self.scale_x + self.offset_x)
+                y_scaled = int(y * self.scale_y + self.offset_y)
                 r_scaled = int(r * self.scale_x)
 
                 # Draw on depth image (using scaled radius)
@@ -202,10 +206,10 @@ class DetectPipe(Node):
                 )
 
                 # Extract depth ROI
-                y_min = max(0, y_scaled - r_scaled)
-                y_max = min(self.depth_height, y_scaled + r_scaled)
-                x_min = max(0, x_scaled - r_scaled)
-                x_max = min(self.depth_width, x_scaled + r_scaled)
+                y_min = max(0, int(y_scaled - r_scaled))
+                y_max = min(self.depth_height, int(y_scaled + r_scaled))
+                x_min = max(0, int(x_scaled - r_scaled))
+                x_max = min(self.depth_width, int(x_scaled + r_scaled))
                 depth_roi = self.latest_depth_frame[y_min:y_max, x_min:x_max]
 
                 if depth_roi.size == 0:
