@@ -15,7 +15,7 @@ import signal
 # Constants
 TWIST_TOPIC = "/servo_node/delta_twist_cmds"
 JOINT_TOPIC = "/servo_node/delta_joint_cmds"
-EEF_FRAME_ID = "camera_link"
+EEF_FRAME_ID = "end_effector_link"
 BASE_FRAME_ID = "gen3_base_link"
 
 KEY_BINDINGS = {
@@ -25,13 +25,19 @@ KEY_BINDINGS = {
     "\x1b[D": ("twist", "y", -1.0),  # LEFT arrow
     ".": ("twist", "z", -1.0),
     ";": ("twist", "z", 1.0),
+    "w": ("twist_angular", "x", 0.5),
+    "s": ("twist_angular", "x", -0.5),
+    "a": ("twist_angular", "y", -0.5),
+    "d": ("twist_angular", "y", 0.5),
+    "z": ("twist_angular", "z", -0.5),
+    "x": ("twist_angular", "z", 0.5),
     "1": ("joint", "joint_1"),
     "2": ("joint", "joint_2"),
     "3": ("joint", "joint_3"),
     "4": ("joint", "joint_4"),
     "5": ("joint", "joint_5"),
     "6": ("joint", "joint_6"),
-    "w": ("frame", BASE_FRAME_ID),
+    "b": ("frame", BASE_FRAME_ID),
     "e": ("frame", EEF_FRAME_ID),
     "r": ("reverse", None),
     "q": ("quit", None),
@@ -90,10 +96,23 @@ Use 1|2|3|4|5|6|7 keys to joint jog. 'R' to reverse the direction of jogging.
 
                 if action == "twist":
                     msg = TwistStamped()
+                    msg.twist.linear.x = 0.0
+                    msg.twist.linear.y = 0.0
+                    msg.twist.linear.z = 0.0
                     if value in ["x", "y", "z"]:
                         setattr(
                             msg.twist.linear, value, binding[2]
                         )  # Use the third element in the tuple for the value
+                    msg.header.stamp = self.get_clock().now().to_msg()
+                    msg.header.frame_id = self.frame_to_publish
+                    self.twist_pub.publish(msg)
+                elif action == "twist_angular":
+                    msg = TwistStamped()
+                    msg.twist.angular.x = 0.0
+                    msg.twist.angular.y = 0.0
+                    msg.twist.angular.z = 0.0
+                    if value in ["x", "y", "z"]:
+                        setattr(msg.twist.angular, value, binding[2])
                     msg.header.stamp = self.get_clock().now().to_msg()
                     msg.header.frame_id = self.frame_to_publish
                     self.twist_pub.publish(msg)
