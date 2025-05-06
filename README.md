@@ -6,22 +6,24 @@ This is a ROS 2 package to simulate the Boston Dynamics spot in [webots](https:/
 
 The world contains apriltags, a red line to test lane follower and objects for manipulation tasks.
 
+![Spot](spot.png)
+
 ## At this point you might have switched to this branch
 
 Follow these steps
 
-1. Build packages and source the workspace
+1. Install Kortex description and robotiq description and gripper controller
+    ```
+    sudo apt install ros-humble-kortex-description ros-humble-robotiq-description ros-humble-gripper-controllers
+    ```
+
+2. Build packages and source the workspace
     ```
     colcon build --symlink-install
     source install/setup.bash
     ```
 
-2. Add Kortex description and robotiq description and gripper controller
-    ```
-    sudo apt install ros-humble-kortex-description ros-humble-robotiq-description ros-humble-gripper-controllers
-    ```
-
-3. Add missing Meshes
+3. Add missing Meshes (yes, even though you installed it up there)
 
     Copy the 2f_140 folder in ```opt/ros/humble/share/robotiq_description/meshes/visual``` and ```opt/ros/humble/share/robotiq_description/meshes/collision```
 
