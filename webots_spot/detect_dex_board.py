@@ -13,6 +13,9 @@ from tf2_ros import TransformBroadcaster
 import tf_transformations
 
 
+green = False
+
+
 class DexBoardDetector(Node):
     def __init__(self):
         super().__init__("dex_board_detector")
@@ -79,15 +82,17 @@ class DexBoardDetector(Node):
         self.get_logger().info(f"Number of blue regions: {len(blue_contours)}")
 
         if blue_contours:
-            for contour in blue_contours:
-                epsilon = 0.04 * cv2.arcLength(contour, True)
-                approx = cv2.approxPolyDP(contour, epsilon, True)
+            # for contour in blue_contours:
+            #     epsilon = 0.04 * cv2.arcLength(contour, True)
+            #     approx = cv2.approxPolyDP(contour, epsilon, True)
 
-                if len(approx) == 4:
-                    self.process_contours(cv_image, [approx], "blue")
+            # if len(approx) == 4:
+            self.process_contours(cv_image, blue_contours, "blue")
 
-        cv2.imshow("dex_board Detection", cv_image)
-        cv2.waitKey(1)
+        # cv2.imshow("dex_board Detection", cv_image)
+        # cv2.imshow("green_mask", green_mask)
+        # cv2.imshow("blue_mask", blue_mask)
+        # cv2.waitKey(1)
 
     def process_contours(self, cv_image, contours, color):
         combined_mask = np.zeros_like(cv_image[:, :, 0])
@@ -109,7 +114,7 @@ class DexBoardDetector(Node):
                     self.get_logger().error(f"Depth fetch error: {e}")
 
             if depth is not None:
-                self.broadcast_dex_board_transform(cX, cY, depth)
+                self.broadcast_dex_board_transform(cX, cY, depth, color)
 
             x, y, w, h = cv2.boundingRect(combined_mask)
             color_bgr = (0, 255, 0) if color == "green" else (255, 0, 0)
@@ -127,7 +132,7 @@ class DexBoardDetector(Node):
         else:
             self.get_logger().info(f"Centroid undefined — zero area {color} dex_board.")
 
-    def broadcast_dex_board_transform(self, cX, cY, depth):
+    def broadcast_dex_board_transform(self, cX, cY, depth, color):
         fx = 772.5
         fy = 772.5
         cx = 320.0
@@ -145,10 +150,10 @@ class DexBoardDetector(Node):
 
         try:
             if not self.tf_buffer.can_transform(
-                "gen3_base_link",
+                "base_link",
                 "camera_link",
                 rclpy.time.Time(),
-                timeout=rclpy.duration.Duration(seconds=2.0),
+                timeout=rclpy.duration.Duration(seconds=1.0),
             ):
                 self.get_logger().error(
                     "Transform from kinova vision to base_link not available"
@@ -156,7 +161,7 @@ class DexBoardDetector(Node):
                 return
 
             transform = self.tf_buffer.lookup_transform(
-                "gen3_base_link", "camera_link", rclpy.time.Time()
+                "base_link", "camera_link", rclpy.time.Time()
             )
             self.get_logger().info(
                 f"Transform: translation=({transform.transform.translation.x:.3f}, "
@@ -189,8 +194,8 @@ class DexBoardDetector(Node):
             # Step 6: Broadcast TF
             tf_msg = TransformStamped()
             tf_msg.header.stamp = self.get_clock().now().to_msg()
-            tf_msg.header.frame_id = "gen3_base_link"
-            tf_msg.child_frame_id = "dex_board"
+            tf_msg.header.frame_id = "base_link"
+            tf_msg.child_frame_id = f"dex_board_{color}"
             tf_msg.transform.translation.x = base_pos[0]
             tf_msg.transform.translation.y = base_pos[1]
             tf_msg.transform.translation.z = base_pos[2]

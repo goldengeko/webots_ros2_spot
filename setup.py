@@ -55,6 +55,7 @@ setup(
             "set_ready_position = " + package_name + ".set_ready_position:main",
             "teleop_servo = " + package_name + ".teleop_servo:main",
             "dex_sequence = " + package_name + ".dex_sequence:main",
+            "detect_dex_board = " + package_name + ".detect_dex_board:main",
         ],
     },
 )
