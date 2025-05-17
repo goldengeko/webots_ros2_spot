@@ -31,6 +31,9 @@ class DexBoardDetector(Node):
 
         self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
 
+        self.base_frame = "base_link"
+        self.camera_frame = "camera_link"
+
         self.tf_buffer = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
 
@@ -150,8 +153,8 @@ class DexBoardDetector(Node):
 
         try:
             if not self.tf_buffer.can_transform(
-                "base_link",
-                "camera_link",
+                self.base_frame,
+                self.camera_frame,
                 rclpy.time.Time(),
                 timeout=rclpy.duration.Duration(seconds=1.0),
             ):
@@ -161,7 +164,7 @@ class DexBoardDetector(Node):
                 return
 
             transform = self.tf_buffer.lookup_transform(
-                "base_link", "camera_link", rclpy.time.Time()
+                self.base_frame, self.camera_frame, rclpy.time.Time()
             )
             self.get_logger().info(
                 f"Transform: translation=({transform.transform.translation.x:.3f}, "

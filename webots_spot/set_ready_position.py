@@ -46,11 +46,11 @@ class SetReadyPosition(Node):
         point = JointTrajectoryPoint()
         point.positions = [
             0.0,  # joint_1: Neutral
-            -0.5,  # joint_2: Slightly extended
-            1.0,  # joint_3: Mid-range
+            0.8,  # joint_2: Slightly extended
+            -2.3,  # joint_3: Mid-range
             0.0,  # joint_4: Neutral
-            -0.5,  # joint_5: Slight bend
-            0.0,  # joint_6: Neutral
+            1.57,  # joint_5: Slight bend
+            1.57,  # joint_6: Neutral
         ]
         point.velocities = [0.0] * 6
         point.time_from_start.sec = 3  # Move over 3 seconds
