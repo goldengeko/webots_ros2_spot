@@ -1,7 +1,7 @@
 # MoveIt uses this configuration for controller management
 controller_names:
   - kinova_joint_trajectory_controller
-  - robotiq_gripper_controller
+  # - robotiq_gripper_controller
 
 kinova_joint_trajectory_controller:
   type: FollowJointTrajectory
@@ -14,10 +14,10 @@ kinova_joint_trajectory_controller:
     - joint_4
     - joint_5
     - joint_6
-robotiq_gripper_controller:
-  type: GripperCommand
-  joints:
-    - finger_joint
-  action_ns: gripper_cmd
-  default: true
+# robotiq_gripper_controller:
+#   type: GripperCommand
+#   joints:
+#     - finger_joint
+#   action_ns: gripper_cmd
+#   default: true
     
