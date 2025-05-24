@@ -69,8 +69,7 @@ class MoveGroupActionClient:
         joints["joint_3"] = j[2]
         joints["joint_4"] = j[3]
         joints["joint_5"] = j[4]
-        # joints['wrist_3_joint'] = j[5]
-        joints["joint_6"] = 0.0  # gripper always horizontal
+        joints["joint_6"] = 0.0
 
         constraints = Constraints()
         for joint, angle in joints.items():
@@ -161,44 +160,35 @@ class MinimalClientAsync:
         ]
 
         self.sequence = [
-            "omni_front",
-            "top_right",
-            "top_left",
-            "bottom_right",
-            "bottom_left",
+            "linear_front",
+            "front_left",
+            "angled_left",
+            "front_right",
+            "angled_right",
         ]
 
     def on_timer(self):
         global tf_base_link_pipe
-
-        try:
-            t = self.tf_buffer.lookup_transform(
-                "base_link", "omni_front", rclpy.time.Time()
-            )
-            tf_base_link_pipe = [
-                t.transform.translation.x,
-                t.transform.translation.y,
-                t.transform.translation.z,
-                t.transform.rotation.x,
-                t.transform.rotation.y,
-                t.transform.rotation.z,
-                t.transform.rotation.w,
-            ]
-
-            self.tf_base_link_pipe = tf_base_link_pipe
-            self.logger.info(
-                f"base_link to linear_front transform:\n"
-                f"x: {tf_base_link_pipe[0]:.3f}\n"
-                f"y: {tf_base_link_pipe[1]:.3f}\n"
-                f"z: {tf_base_link_pipe[2]:.3f}\n"
-                f"rx: {tf_base_link_pipe[3]:.3f}\n"
-                f"ry: {tf_base_link_pipe[4]:.3f}\n"
-                f"rz: {tf_base_link_pipe[5]:.3f}\n"
-                f"rw: {tf_base_link_pipe[6]:.3f}"
-            )
-        except TransformException as ex:
-            self.logger.info(f"Could not transform base_link to can: {ex}")
-            return
+        for frame in self.sequence:
+            try:
+                t = self.tf_buffer.lookup_transform(
+                    "base_link",
+                    frame,
+                    rclpy.time.Time(seconds=0.0),
+                    timeout=rclpy.duration.Duration(seconds=0.05),
+                )
+                tf_base_link_pipe = [
+                    t.transform.translation.x,
+                    t.transform.translation.y,
+                    t.transform.translation.z,
+                    t.transform.rotation.x,
+                    t.transform.rotation.y,
+                    t.transform.rotation.z,
+                    t.transform.rotation.w,
+                ]
+            except TransformException as ex:
+                self.logger.info(f"Could not transform base_link to {frame}: {ex}")
+                return
 
     def joint_states_cb(self, joint_state):
         global global_joint_states
@@ -214,7 +204,7 @@ class MinimalClientAsync:
         self.req.ik_request.pose_stamped.header.stamp = self.clock.now().to_msg()
         self.req.ik_request.pose_stamped.header.frame_id = "base_link"
 
-        self.req.ik_request.pose_stamped.pose.position.x = tf_base_link_pipe[0] - 0.3
+        self.req.ik_request.pose_stamped.pose.position.x = tf_base_link_pipe[0] - 0.5
         self.req.ik_request.pose_stamped.pose.position.y = tf_base_link_pipe[1]
         self.req.ik_request.pose_stamped.pose.position.z = tf_base_link_pipe[2]
         self.req.ik_request.pose_stamped.pose.orientation.x = tf_base_link_pipe[3]
@@ -259,7 +249,6 @@ def main():
     node = Node("moveit_ik_python")
     minimal_client = MinimalClientAsync(node)
 
-    # Wait for initial joint states and at least one transform
     while global_joint_states is None or tf_base_link_pipe is None:
         rclpy.spin_once(node)
 
@@ -296,7 +285,7 @@ def main():
             minimal_client.logger.info(
                 f"Could not transform base_link to {frame}: {ex}"
             )
-            transforms[frame] = None  # Mark as unavailable
+            transforms[frame] = None
 
     # 2. Compute IK and send trajectories using stored transforms
     for frame in minimal_client.sequence:
@@ -305,7 +294,6 @@ def main():
             minimal_client.logger.info(f"Skipping {frame}: no stored transform")
             continue
 
-        # Set the global tf_base_link_pipe to the stored transform for this frame
         tf_base_link_pipe = tf_data
         minimal_client.tf_base_link_pipe = tf_data
 
@@ -317,8 +305,6 @@ def main():
 
         minimal_client.send_trajectory(target_angles)
         minimal_client.logger.info(f"Sent trajectory for {frame}")
-
-        # Wait 3 seconds before next move
         time.sleep(3)
 
     node.destroy_node()

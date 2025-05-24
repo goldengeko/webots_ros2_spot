@@ -57,6 +57,7 @@ setup(
             "dex_sequence = " + package_name + ".dex_sequence:main",
             "detect_dex_board = " + package_name + ".detect_dex_board:main",
             "move_to_pose = " + package_name + ".move_to_pose:main",
+            "nav2dex = " + package_name + ".nav2dex:main",
         ],
     },
 )

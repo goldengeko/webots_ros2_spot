@@ -5,11 +5,17 @@ from launch_ros.actions import Node
 def generate_launch_description():
     return LaunchDescription(
         [
-            Node(package="webots_spot", executable="detect_dex_board", output="screen"),
+            Node(
+                package="webots_spot",
+                executable="detect_dex_board",
+                output="screen",
+                parameters=[{"use_sim_time": True}],
+            ),
             Node(
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "0",
                     "0",
@@ -26,6 +32,7 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "0.3",
                     "0",
@@ -42,6 +49,7 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "-0.3",
                     "0",
@@ -58,10 +66,11 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "0.15",
                     "0",
-                    "-0.05",
+                    "-0.1",
                     "0",
                     "-0.4871745",
                     "0.0",
@@ -74,10 +83,11 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "-0.15",
                     "0",
-                    "-0.05",
+                    "-0.1",
                     "0",
                     "0.4871745",
                     "0.0",
@@ -90,6 +100,7 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "0",
                     "0",
@@ -106,6 +117,7 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "0.15",
                     "0.15",
@@ -122,6 +134,7 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "0.15",
                     "-0.15",
@@ -138,6 +151,7 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "-0.15",
                     "0.15",
@@ -154,6 +168,7 @@ def generate_launch_description():
                 package="tf2_ros",
                 executable="static_transform_publisher",
                 output="screen",
+                parameters=[{"use_sim_time": True}],
                 arguments=[
                     "-0.15",
                     "-0.15",

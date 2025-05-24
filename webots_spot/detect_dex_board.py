@@ -31,7 +31,7 @@ class DexBoardDetector(Node):
 
         self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
 
-        self.base_frame = "base_link"
+        self.base_frame = "odom"
         self.camera_frame = "camera_link"
 
         self.tf_buffer = tf2_ros.Buffer()
@@ -156,15 +156,18 @@ class DexBoardDetector(Node):
                 self.base_frame,
                 self.camera_frame,
                 rclpy.time.Time(),
-                timeout=rclpy.duration.Duration(seconds=1.0),
+                timeout=rclpy.duration.Duration(seconds=0.05),
             ):
                 self.get_logger().error(
-                    "Transform from kinova vision to base_link not available"
+                    f"Transform from {self.camera_frame} to {self.base_frame} not available"
                 )
                 return
 
             transform = self.tf_buffer.lookup_transform(
-                self.base_frame, self.camera_frame, rclpy.time.Time()
+                self.base_frame,
+                self.camera_frame,
+                rclpy.time.Time(),
+                timeout=rclpy.duration.Duration(seconds=0.05),
             )
             self.get_logger().info(
                 f"Transform: translation=({transform.transform.translation.x:.3f}, "
@@ -197,7 +200,7 @@ class DexBoardDetector(Node):
             # Step 6: Broadcast TF
             tf_msg = TransformStamped()
             tf_msg.header.stamp = self.get_clock().now().to_msg()
-            tf_msg.header.frame_id = "base_link"
+            tf_msg.header.frame_id = self.base_frame
             tf_msg.child_frame_id = f"dex_board_{color}"
             tf_msg.transform.translation.x = base_pos[0]
             tf_msg.transform.translation.y = base_pos[1]
@@ -209,7 +212,7 @@ class DexBoardDetector(Node):
 
             self.tf_broadcaster.sendTransform(tf_msg)
             self.get_logger().info(
-                f"[TF] dex_board in base_link: x={base_pos[0]:.3f}, "
+                f"[TF] dex_board in {self.base_frame}: x={base_pos[0]:.3f}, "
                 f"y={base_pos[1]:.3f}, z={base_pos[2]:.3f}"
             )
 

@@ -9,20 +9,20 @@ import cv2
 import numpy as np
 import tf2_geometry_msgs
 import tf2_ros
-from tf2_ros import Buffer, TransformListener  # Import for TF lookup
+from tf2_ros import Buffer, TransformListener
+import tf_transformations
+from tf2_ros import LookupException, ConnectivityException, ExtrapolationException
 
 
 class CircleDetectorTF(Node):
     def __init__(self):
         super().__init__("circle_detector_tf")
 
-        # TF Broadcaster
         self.tf_broadcaster = TransformBroadcaster(self)
         self.bridge = CvBridge()
 
-        self.camera_frame = "camera_color_frame"
+        self.camera_frame = "camera_link"  # Change this to your camera frame name
 
-        # TF Buffer and Listener to get camera orientation
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
@@ -30,50 +30,88 @@ class CircleDetectorTF(Node):
             String, "/detected_pipe/center", self.transform_callback, 10
         )
 
-    def transform_callback(self, msg):
-        try:
-            data = msg.data.strip().split(", ")
-            x_center = float(data[0].split(":")[1])
-            y_center = float(data[1].split(":")[1])
-            distance = float(data[2].split(":")[1].split(" ")[0])
-        except (IndexError, ValueError) as e:
-            self.get_logger().error(f"Failed to parse message: {msg.data}")
-            return
+    def broadcast_pipe_transform(self, cX, cY, depth, color):
+        fx = 772.5
+        fy = 772.5
+        cx = 320.0
+        cy = 240.0
 
-        z = distance
-        x = x_center / 1000
-        y = y_center / 1000
+        X = (cX - cx) * depth / fx
+        Y = (cY - cy) * depth / fy
+        Z = depth
 
-        # Get the camera's orientation from the TF tree
+        self.get_logger().info(
+            f"dex_board in kinova vision: x={X:.3f}, y={Y:.3f}, z={Z:.3f}"
+        )
+
+        cam_pos = np.array([X, Y, Z], dtype=float)
+
         try:
-            camera_transform = self.tf_buffer.lookup_transform(
-                "camera_link",
+            if not self.tf_buffer.can_transform(
+                self.base_frame,
                 self.camera_frame,
                 rclpy.time.Time(),
+                timeout=rclpy.duration.Duration(seconds=1.0),
+            ):
+                self.get_logger().error(
+                    "Transform from kinova vision to base_link not available"
+                )
+                return
+
+            transform = self.tf_buffer.lookup_transform(
+                self.base_frame, self.camera_frame, rclpy.time.Time()
             )
-            rotation = camera_transform.transform.rotation
+            self.get_logger().info(
+                f"Transform: translation=({transform.transform.translation.x:.3f}, "
+                f"{transform.transform.translation.y:.3f}, {transform.transform.translation.z:.3f}), "
+                f"rotation=({transform.transform.rotation.x:.3f}, {transform.transform.rotation.y:.3f}, "
+                f"{transform.transform.rotation.z:.3f}, {transform.transform.rotation.w:.3f})"
+            )
+
+            translation = np.array(
+                [
+                    transform.transform.translation.x,
+                    transform.transform.translation.y,
+                    transform.transform.translation.z,
+                ],
+                dtype=float,
+            )
+
+            quaternion = [
+                transform.transform.rotation.x,
+                transform.transform.rotation.y,
+                transform.transform.rotation.z,
+                transform.transform.rotation.w,
+            ]
+
+            rotation_matrix = tf_transformations.quaternion_matrix(quaternion)[:3, :3]
+
+            # Step 5: Transform position to base frame
+            base_pos = np.dot(rotation_matrix, cam_pos) + translation
+
+            # Step 6: Broadcast TF
+            tf_msg = TransformStamped()
+            tf_msg.header.stamp = self.get_clock().now().to_msg()
+            tf_msg.header.frame_id = "base_link"
+            tf_msg.child_frame_id = f"dex_board_{color}"
+            tf_msg.transform.translation.x = base_pos[0]
+            tf_msg.transform.translation.y = base_pos[1]
+            tf_msg.transform.translation.z = base_pos[2]
+            tf_msg.transform.rotation.x = 0.0
+            tf_msg.transform.rotation.y = 0.0
+            tf_msg.transform.rotation.z = 0.0
+            tf_msg.transform.rotation.w = 1.0
+
+            self.tf_broadcaster.sendTransform(tf_msg)
+            self.get_logger().info(
+                f"[TF] dex_board in base_link: x={base_pos[0]:.3f}, "
+                f"y={base_pos[1]:.3f}, z={base_pos[2]:.3f}"
+            )
+
+        except (LookupException, ConnectivityException, ExtrapolationException) as e:
+            self.get_logger().error(f"TF lookup failed: {e}")
         except Exception as e:
-            self.get_logger().error(f"Failed to get camera orientation: {str(e)}")
-            return
-
-        transform = TransformStamped()
-        transform.header.stamp = self.get_clock().now().to_msg()
-        transform.header.frame_id = self.camera_frame
-        transform.child_frame_id = "detected_circle"
-
-        transform.transform.translation.x = x
-        transform.transform.translation.y = y
-        transform.transform.translation.z = z
-        transform.transform.rotation.x = rotation.x
-        transform.transform.rotation.y = rotation.y
-        transform.transform.rotation.z = rotation.z
-        transform.transform.rotation.w = rotation.w
-
-        self.tf_broadcaster.sendTransform(transform)
-        self.get_logger().info(
-            f"Broadcasted transform: x={x:.2f}, y={y:.2f}, z={z:.2f}, "
-            f"rotation=({rotation.x:.2f}, {rotation.y:.2f}, {rotation.z:.2f}, {rotation.w:.2f})"
-        )
+            self.get_logger().error(f"Unexpected error in TF broadcast: {e}")
 
 
 def main(args=None):
