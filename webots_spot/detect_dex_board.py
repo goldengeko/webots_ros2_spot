@@ -1,7 +1,6 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from std_msgs.msg import String
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
@@ -11,7 +10,8 @@ import tf2_ros
 from tf2_ros import LookupException, ConnectivityException, ExtrapolationException
 from tf2_ros import TransformBroadcaster
 import tf_transformations
-
+import yaml
+import os
 
 green = False
 
@@ -25,7 +25,6 @@ class DexBoardDetector(Node):
         self.depth_sub = self.create_subscription(
             Image, "Gen3/kinova_depth/image", self.depth_callback, 10
         )
-        self.dex_board_pub = self.create_publisher(String, "dex_board_position", 10)
         self.bridge = CvBridge()
         self.latest_depth_image = None
 
@@ -38,6 +37,12 @@ class DexBoardDetector(Node):
         self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
 
         self.get_logger().info("dex_board Detector Node Initialized")
+
+        self.best_blob = {
+            "green": {"area": 0, "pose": None},
+            "blue": {"area": 0, "pose": None},
+        }
+        self.yaml_path = os.path.join(os.path.expanduser("~"), "dex_board_poses.yaml")
 
     def depth_callback(self, msg):
         try:
@@ -74,7 +79,7 @@ class DexBoardDetector(Node):
         green_contours, _ = cv2.findContours(
             green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
         )
-        self.get_logger().info(f"Number of green regions: {len(green_contours)}")
+        self.get_logger().debug(f"Number of green regions: {len(green_contours)}")
 
         if green_contours:
             self.process_contours(cv_image, green_contours, "green")
@@ -82,7 +87,7 @@ class DexBoardDetector(Node):
         blue_contours, _ = cv2.findContours(
             blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
         )
-        self.get_logger().info(f"Number of blue regions: {len(blue_contours)}")
+        self.get_logger().debug(f"Number of blue regions: {len(blue_contours)}")
 
         if blue_contours:
             # for contour in blue_contours:
@@ -98,8 +103,13 @@ class DexBoardDetector(Node):
         # cv2.waitKey(1)
 
     def process_contours(self, cv_image, contours, color):
+        # Find the largest contour by area
+        largest_contour = max(contours, key=cv2.contourArea)
+        area = cv2.contourArea(largest_contour)
         combined_mask = np.zeros_like(cv_image[:, :, 0])
-        cv2.drawContours(combined_mask, contours, -1, (255), thickness=cv2.FILLED)
+        cv2.drawContours(
+            combined_mask, [largest_contour], -1, (255), thickness=cv2.FILLED
+        )
 
         moments = cv2.moments(combined_mask)
         if moments["m00"] != 0:
@@ -110,32 +120,28 @@ class DexBoardDetector(Node):
             if self.latest_depth_image is not None:
                 try:
                     depth = self.latest_depth_image[cY, cX]
-                    self.get_logger().info(f"Raw depth at ({cX}, {cY}): {depth}")
+                    self.get_logger().debug(f"Raw depth at ({cX}, {cY}): {depth}")
                     if np.isnan(depth) or depth == 0:
                         depth = None
                 except Exception as e:
                     self.get_logger().error(f"Depth fetch error: {e}")
 
             if depth is not None:
-                self.broadcast_dex_board_transform(cX, cY, depth, color)
+                pose = self.broadcast_dex_board_transform(
+                    cX, cY, depth, color, save_pose=True, area=area
+                )
 
             x, y, w, h = cv2.boundingRect(combined_mask)
             color_bgr = (0, 255, 0) if color == "green" else (255, 0, 0)
             cv2.rectangle(cv_image, (x, y), (x + w, y + h), color_bgr, 2)
             cv2.circle(cv_image, (cX, cY), 7, (255, 255, 255), -1)
 
-            depth_str = f"{depth:.3f} m" if depth is not None else "invalid"
-            msg_str = (
-                f"{color.capitalize()} dex_board at: ({cX}, {cY}), Depth: {depth_str}"
-            )
-            self.get_logger().info(msg_str)
-            dex_board_msg = String()
-            dex_board_msg.data = msg_str
-            self.dex_board_pub.publish(dex_board_msg)
         else:
-            self.get_logger().info(f"Centroid undefined — zero area {color} dex_board.")
+            self.get_logger().warn(f"Centroid undefined — zero area {color} dex_board.")
 
-    def broadcast_dex_board_transform(self, cX, cY, depth, color):
+    def broadcast_dex_board_transform(
+        self, cX, cY, depth, color, save_pose=False, area=0
+    ):
         fx = 772.5
         fy = 772.5
         cx = 320.0
@@ -145,7 +151,7 @@ class DexBoardDetector(Node):
         Y = (cY - cy) * depth / fy
         Z = depth
 
-        self.get_logger().info(
+        self.get_logger().debug(
             f"dex_board in kinova vision: x={X:.3f}, y={Y:.3f}, z={Z:.3f}"
         )
 
@@ -169,12 +175,6 @@ class DexBoardDetector(Node):
                 rclpy.time.Time(),
                 timeout=rclpy.duration.Duration(seconds=0.05),
             )
-            self.get_logger().info(
-                f"Transform: translation=({transform.transform.translation.x:.3f}, "
-                f"{transform.transform.translation.y:.3f}, {transform.transform.translation.z:.3f}), "
-                f"rotation=({transform.transform.rotation.x:.3f}, {transform.transform.rotation.y:.3f}, "
-                f"{transform.transform.rotation.z:.3f}, {transform.transform.rotation.w:.3f})"
-            )
 
             translation = np.array(
                 [
@@ -193,11 +193,8 @@ class DexBoardDetector(Node):
             ]
 
             rotation_matrix = tf_transformations.quaternion_matrix(quaternion)[:3, :3]
-
-            # Step 5: Transform position to base frame
             base_pos = np.dot(rotation_matrix, cam_pos) + translation
 
-            # Step 6: Broadcast TF
             tf_msg = TransformStamped()
             tf_msg.header.stamp = self.get_clock().now().to_msg()
             tf_msg.header.frame_id = self.base_frame
@@ -211,15 +208,50 @@ class DexBoardDetector(Node):
             tf_msg.transform.rotation.w = 1.0
 
             self.tf_broadcaster.sendTransform(tf_msg)
-            self.get_logger().info(
+            self.get_logger().debug(
                 f"[TF] dex_board in {self.base_frame}: x={base_pos[0]:.3f}, "
                 f"y={base_pos[1]:.3f}, z={base_pos[2]:.3f}"
             )
+
+            # Save the best pose if requested
+            if save_pose and area > self.best_blob[color]["area"]:
+                self.best_blob[color]["area"] = area
+                self.best_blob[color]["pose"] = {
+                    "frame_id": self.base_frame,
+                    "child_frame_id": f"dex_board_{color}",
+                    "translation": {
+                        "x": float(base_pos[0]),
+                        "y": float(base_pos[1]),
+                        "z": float(base_pos[2]),
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0,
+                    },
+                }
+                self.save_board_pose()
 
         except (LookupException, ConnectivityException, ExtrapolationException) as e:
             self.get_logger().error(f"TF lookup failed: {e}")
         except Exception as e:
             self.get_logger().error(f"Unexpected error in TF broadcast: {e}")
+
+    def save_board_pose(self):
+        # Save only the best pose for each color
+        data = {}
+        for color in ["green", "blue"]:
+            if self.best_blob[color]["pose"] is not None:
+                data[self.best_blob[color]["pose"]["child_frame_id"]] = self.best_blob[
+                    color
+                ]["pose"]
+        try:
+            with open(self.yaml_path, "w") as f:
+                yaml.dump(data, f)
+            self.get_logger().info(f"Saved best dex_board poses to {self.yaml_path}")
+        except Exception as e:
+            self.get_logger().error(f"Failed to save pose: {e}")
 
 
 def main(args=None):
